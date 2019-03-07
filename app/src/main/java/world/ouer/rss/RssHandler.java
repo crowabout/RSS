@@ -44,10 +44,8 @@ public class RssHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 		stringBuilder = new StringBuilder();
-		
 		if(qName.equals("item") && rssFeed != null) {
 			rssItem = new RssItem();
-			rssItem.setFeed(rssFeed);
 			rssFeed.addRssItem(rssItem);
 		}
 	}

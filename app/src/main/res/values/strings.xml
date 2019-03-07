@@ -6,4 +6,23 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="sync">sync</string>
+
+    <string name="txtMany">豌豆莢ios下载微信2018旧版pp助手苹果下载安卓市场官方版
+豌豆荚安卓市场下载2019安卓最新版_豌豆荚安卓市场手机官方版免费...
+豌豆- 百度快照</string>
+
+
+    <string-array name="channels">
+        <!--CNN10-->
+        <item>http://rss.cnn.com/services/podcasting/studentnews/rss.xml</item>
+        <!--6-scientific american-->
+        <item>http://www.scientificamerican.com/podcast/sciam_podcast_i_d.xml</item>
+        <!--NPR-->
+        <item>http://www.npr.org/rss/rss.php?id=1007</item>
+        <!--reuters-->
+        <item>http://feeds.reuters.com/reuters/worldNews</item>
+    </string-array>
+
+    <string name="addSource">添加RSS源</string>
 </resources>

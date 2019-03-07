@@ -15,40 +15,59 @@
  */
 
 package world.ouer.rss;
-
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+@Entity(nameInDb = "RSS")
 public class RssItem implements Comparable<RssItem>, Parcelable {
 
-	private RssFeed feed;
-	private String title;
-	private String link;
-	private Date pubDate;
-	private String description;
-	private String content;
+	@Id(autoincrement = true)
+	Long id;
+	String title;
+	String link;
+	Date pubDate;
+	String description;
+	String content;
+	String channel;
 
 	public RssItem() {
 		
 	}
 	
 	public RssItem(Parcel source) {
-		
+
 		Bundle data = source.readBundle();
 		title = data.getString("title");
 		link = data.getString("link");
 		pubDate = (Date) data.getSerializable("pubDate");
 		description = data.getString("description");
 		content = data.getString("content");
-		feed = data.getParcelable("feed");
-		
+
 	}
+
+	@Generated(hash = 1507889815)
+	public RssItem(Long id, String title, String link, Date pubDate, String description, String content,
+									String channel) {
+					this.id = id;
+					this.title = title;
+					this.link = link;
+					this.pubDate = pubDate;
+					this.description = description;
+					this.content = content;
+					this.channel = channel;
+	}
+
+
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -59,7 +78,6 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 		data.putSerializable("pubDate", pubDate);
 		data.putString("description", description);
 		data.putString("content", content);
-		data.putParcelable("feed", feed);
 		dest.writeBundle(data);
 	}
 	
@@ -75,14 +93,6 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 	@Override
 	public int describeContents() {
 		return 0;
-	}
-	
-	public RssFeed getFeed() {
-		return feed;
-	}
-
-	public void setFeed(RssFeed feed) {
-		this.feed = feed;
 	}
 
 	public String getTitle() {
@@ -142,5 +152,28 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 			return 0;
 		}
 	}
-	
+
+	public Long getId() {
+					return this.id;
+	}
+
+	public void setId(Long id) {
+					this.id = id;
+	}
+
+	public String getCategory() {
+		return channel;
+	}
+
+	public void setCategory(String channel) {
+		this.channel = channel;
+	}
+
+	public String getChannel() {
+					return this.channel;
+	}
+
+	public void setChannel(String channel) {
+					this.channel = channel;
+	}
 }
