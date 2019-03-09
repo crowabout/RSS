@@ -30,17 +30,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class RssReader {
-
+    private static final String TAG = "RssReader";
     public static RssFeed read(URL url) throws SAXException, IOException {
-
         return read(url.openStream());
-
     }
 
     public static RssFeed read(InputStream stream) throws SAXException, IOException {
-
         try {
-
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser parser = factory.newSAXParser();
             XMLReader reader = parser.getXMLReader();

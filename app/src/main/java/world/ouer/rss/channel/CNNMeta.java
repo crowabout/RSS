@@ -1,4 +1,4 @@
-package world.ouer.rss.Channel;
+package world.ouer.rss.channel;
 
 /**
  * Created by pc on 2019/3/7.

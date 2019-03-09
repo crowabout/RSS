@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:npr="https://www.npr.org/rss/" xmlns:nprml="https://api.npr.org/nprml" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+	<channel>
+		<title>Science : NPR</title>
+		<link>https://www.npr.org/templates/story/story.php?storyId=1007</link>
+		<description>The latest health and science news. Updates on medicine, healthy living, nutrition, drugs, diet, and advances in science and technology. Subscribe to the Health &amp; Science podcast.</description>
+		<language>en</language>
+		<copyright>Copyright 2019 NPR - For Personal Use Only</copyright>
+		<generator>NPR API RSS Generator 0.94</generator>
+		<lastBuildDate>Thu, 07 Mar 2019 16:08:19 -0500</lastBuildDate>
+		<image>
+			<url>https://media.npr.org/images/podcasts/primary/npr_generic_image_300.jpg?s=200</url>
+			<title>Science</title>
+			<link>https://www.npr.org/templates/story/story.php?storyId=1007</link>
+		</image>
+		<item>
+			<title>Mysterious Type Of Killer Whale, Sought After For Years, Found In Southern Ocean</title>
+			<description>The notion that there might be some new kind of killer whale emerged in 1955, when photos from New Zealand showed a bunch of unusual-looking whales stranded on a beach.</description>
+			<pubDate>Thu, 07 Mar 2019 16:08:19 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/07/701101633/new-whale-species?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/07/701101633/new-whale-species?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/07/type-d_jean-pierre-sylvestre_br-orcinus-orca-28112011-wsg-1340_wide-2f61635bbab241df9054b4aadcae0de98b9138ce.jpg?s=600' alt='A rare photo of "type D" killer whales off South Georgia island, located between South America and Antarctica, shows the whales' blunt heads and tiny white eye patches.'/><p>The notion that there might be some new kind of killer whale emerged in 1955, when photos from New Zealand showed a bunch of unusual-looking whales stranded on a beach.</p><p>(Image credit: Courtesy of J.P. Sylvestre)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=701101633' />]]>
+			</content:encoded>
+			<dc:creator>Christopher Joyce</dc:creator>
+		</item>
+		<item>
+			<title>An Antibody-Inspired Small Molecule Could Make For A Better Flu Treatment</title>
+			<description>To outsmart influenza, researchers are leveraging the biological information encoded in infection-fighting antibodies to design new drugs. One attempt neutralizes near-lethal levels of flu in mice.</description>
+			<pubDate>Thu, 07 Mar 2019 14:17:00 -0500</pubDate>
+			<link>https://www.npr.org/sections/health-shots/2019/03/07/700796147/an-antibody-inspired-small-molecule-could-make-for-a-better-flu-treatment?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/sections/health-shots/2019/03/07/700796147/an-antibody-inspired-small-molecule-could-make-for-a-better-flu-treatment?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/07/sciencesource_ss21494051_wide-cd1b7147bda677d143869a4b5697f042e9edd36d.jpg?s=600' alt='This colorized scanning electron micrograph shows human cells in a lab infected with "pink" influenza viruses. As many as 650,000 people each year die from flu, according to the World Health Organization.'/><p>To outsmart influenza, researchers are leveraging the biological information encoded in infection-fighting antibodies to design new drugs. One attempt neutralizes near-lethal levels of flu in mice.</p><p>(Image credit: Steve Gschmeissner/Science Source)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=700796147' />]]>
+			</content:encoded>
+			<dc:creator>Jonathan Lambert</dc:creator>
+		</item>
+		<item>
+			<title>How Much Is Today's HIV Research Centered Around The Search For A Cure?</title>
+			<description>For the second time ever, a man's HIV infection has been sent into remission. NPR's Mary Louise Kelly talks with Rowena Johnston, director of research for the Foundation for AIDS Research.</description>
+			<pubDate>Tue, 05 Mar 2019 16:23:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/05/700512059/how-much-is-todays-hiv-research-centered-around-the-search-for-a-cure?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/05/700512059/how-much-is-todays-hiv-research-centered-around-the-search-for-a-cure?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<p>For the second time ever, a man's HIV infection has been sent into remission. NPR's Mary Louise Kelly talks with Rowena Johnston, director of research for the Foundation for AIDS Research.</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=700512059' />]]>
+			</content:encoded>
+		</item>
+		<item>
+			<title>Bone Marrow Transplant Renders Second Patient Free Of HIV</title>
+			<description>British doctors report the apparent eradication of HIV from a patient who was undergoing treatment for cancer. It's only the second time this has been accomplished, despite many attempts.</description>
+			<pubDate>Tue, 05 Mar 2019 12:19:47 -0500</pubDate>
+			<link>https://www.npr.org/sections/health-shots/2019/03/05/700361887/bone-marrow-transplant-renders-second-patient-free-of-hiv?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/sections/health-shots/2019/03/05/700361887/bone-marrow-transplant-renders-second-patient-free-of-hiv?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/05/sciencesource_ss2521514_wide-62f574cc884dbece5219432088f50b1420285c7e.jpg?s=600' alt='A color-enhanced scanning electron micrograph shows HIV particles (orange) infecting a T cell, one of the white blood cells that play a central role in the immune system.'/><p>British doctors report the apparent eradication of HIV from a patient who was undergoing treatment for cancer. It's only the second time this has been accomplished, despite many attempts.</p><p>(Image credit: SCIENCE SOURCE)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=700361887' />]]>
+			</content:encoded>
+			<dc:creator>Richard Harris</dc:creator>
+		</item>
+		<item>
+			<title>Deus Ex...Artificial Intelligence?</title>
+			<description>There are just nine companies that Professor Amy Webb says control the future of AI.</description>
+			<pubDate>Tue, 05 Mar 2019 10:20:35 -0500</pubDate>
+			<link>https://the1a.org/shows/2019-03-05/deus-ex-artificial-intelligence?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://the1a.org/shows/2019-03-05/deus-ex-artificial-intelligence?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<p>There are just nine companies that Professor Amy Webb says control the future of AI.</p><p>(Image credit: Elena Seibert)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=700495968' />]]>
+			</content:encoded>
+		</item>
+		<item>
+			<title>London Patient Cleared Of HIV</title>
+			<description>Doctors in London say they've successfully treated an HIV patient, but the treatment is dangerous and expensive. The news comes 12 years after a different patient was declared cured of AIDS.</description>
+			<pubDate>Tue, 05 Mar 2019 09:17:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/05/700325976/london-patient-cleared-of-hiv?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/05/700325976/london-patient-cleared-of-hiv?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<p>Doctors in London say they've successfully treated an HIV patient, but the treatment is dangerous and expensive. The news comes 12 years after a different patient was declared cured of AIDS.</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=700325976' />]]>
+			</content:encoded>
+			<dc:creator>David Greene</dc:creator>
+		</item>
+		<item>
+			<title>How Federal Disaster Money Favors The Rich</title>
+			<description>The federal government spends billions of dollars each year helping communities rebuild after disasters and to prevent future damage. But that money isn't always allocated to those who need it most.</description>
+			<pubDate>Tue, 05 Mar 2019 05:00:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/05/688786177/how-federal-disaster-money-favors-the-rich?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/05/688786177/how-federal-disaster-money-favors-the-rich?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/01/28/2019_fema_charbage_19_wide-885003f50c7929a415abd0c0b213b7b29b4c6cc1.jpg?s=600' alt='A boy rides his bike through still water after a thunderstorm in the Lakewood area of East Houston, which flooded during Hurricane Harvey.'/><p>The federal government spends billions of dollars each year helping communities rebuild after disasters and to prevent future damage. But that money isn't always allocated to those who need it most.</p><p>(Image credit: Claire Harbage/NPR)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=688786177' />]]>
+			</content:encoded>
+			<dc:creator>Rebecca Hersher</dc:creator>
+		</item>
+		<item>
+			<title>Storytelling Instead Of Scolding: Inuit Say It Makes Their Children More Cool-Headed</title>
+			<description>At the top of the world, parents have figured out how to discipline kids without yelling, scolding or even speaking in an angry tone. Their secret is an ancient tool that sculpts children's behavior.</description>
+			<pubDate>Mon, 04 Mar 2019 17:46:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/04/689925669/storytelling-instead-of-scolding-inuit-say-it-makes-their-children-more-cool-hea?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/04/689925669/storytelling-instead-of-scolding-inuit-say-it-makes-their-children-more-cool-hea?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<p>At the top of the world, parents have figured out how to discipline kids without yelling, scolding or even speaking in an angry tone. Their secret is an ancient tool that sculpts children's behavior.</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=689925669' />]]>
+			</content:encoded>
+			<dc:creator>Michaeleen Doucleff</dc:creator>
+		</item>
+		<item>
+			<title>Is Your Child An Orchid Or A Dandelion? Unlocking The Science Of Sensitive Kids </title>
+			<description>Some kids seem resilient from the start — readily able, like dandelions, to cope with stress and adversity. But pediatrician Thomas Boyce says biologically reactive kids need more support to thrive.</description>
+			<pubDate>Mon, 04 Mar 2019 15:38:00 -0500</pubDate>
+			<link>https://www.npr.org/sections/health-shots/2019/03/04/699979387/is-your-child-an-orchid-or-a-dandelion-unlocking-the-science-of-sensitive-kids?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/sections/health-shots/2019/03/04/699979387/is-your-child-an-orchid-or-a-dandelion-unlocking-the-science-of-sensitive-kids?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/04/gettyimages-83909066-1-_wide-fc9fa484f1e810f1327664261cfc5aa9c21f5f23.jpg?s=600' alt='Given supportive, nurturing conditions, highly reactive "orchid" children can thrive when tackling challenges, pediatrician and author Thomas Boyce says, especially if they have the comfort of a regular routine.'/><p>Some kids seem resilient from the start — readily able, like dandelions, to cope with stress and adversity. But pediatrician Thomas Boyce says biologically reactive kids need more support to thrive.</p><p>(Image credit: Michael H/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=699979387' />]]>
+			</content:encoded>
+			<dc:creator>Dave Davies</dc:creator>
+		</item>
+		<item>
+			<title>Social Media May Sway Kids To Eat More Cookies — And More Calories</title>
+			<description>It's well-known that junk food ads on TV can strongly influence what kids want to eat.  A study finds social media influencers can have the same effect on kids, but not when it comes to healthy foods.</description>
+			<pubDate>Mon, 04 Mar 2019 00:01:00 -0500</pubDate>
+			<link>https://www.npr.org/sections/thesalt/2019/03/04/699588187/social-media-may-sway-kids-to-eat-more-cookies-and-more-calories?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/sections/thesalt/2019/03/04/699588187/social-media-may-sway-kids-to-eat-more-cookies-and-more-calories?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/01/gettyimages-702550027-2-_wide-af5185ffe48b1a8e648cefca07a13c03fc491c86.jpg?s=600' alt='It's well-known that junk food ads on TV can strongly influence what kids want to eat. A study finds social media influencers can have the same effect on kids --but not when it comes to healthy foods.'/><p>It's well-known that junk food ads on TV can strongly influence what kids want to eat.  A study finds social media influencers can have the same effect on kids, but not when it comes to healthy foods.</p><p>(Image credit: Jessica Lee Photography/Getty Images/Image Source)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=699588187' />]]>
+			</content:encoded>
+			<dc:creator>Patti Neighmond</dc:creator>
+		</item>
+		<item>
+			<title>SpaceX Crew Dragon Lands Crucial Station Docking</title>
+			<description>The SpaceX capsule has docked at the International Space Station. It's the first U.S. spacecraft capable of carrying humans to be launched since NASA stopped developing its own space shuttles in 2011.</description>
+			<pubDate>Sun, 03 Mar 2019 17:19:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/03/699892043/spacex-crew-dragon-lands-crucial-station-docking?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/03/699892043/spacex-crew-dragon-lands-crucial-station-docking?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<p>The SpaceX capsule has docked at the International Space Station. It's the first U.S. spacecraft capable of carrying humans to be launched since NASA stopped developing its own space shuttles in 2011.</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=699892043' />]]>
+			</content:encoded>
+		</item>
+		<item>
+			<title>Arizona Lawmakers Consider Loosening Vaccination Requirements</title>
+			<description>Measles outbreaks have prompted some states to consider tightening up laws that allow exemptions from vaccines for personal or philosophical reasons. But in Arizona, lawmakers are going the other way.</description>
+			<pubDate>Sat, 02 Mar 2019 08:23:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/02/699663263/arizona-lawmakers-consider-loosening-vaccination-requirements?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/02/699663263/arizona-lawmakers-consider-loosening-vaccination-requirements?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<p>Measles outbreaks have prompted some states to consider tightening up laws that allow exemptions from vaccines for personal or philosophical reasons. But in Arizona, lawmakers are going the other way.</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=699663263' />]]>
+			</content:encoded>
+			<dc:creator>Will Stone</dc:creator>
+		</item>
+		<item>
+			<title>'Hard Capture Is Complete': SpaceX Capsule Docks With International Space Station</title>
+			<description>SpaceX's Crew Dragon capsule successfully docked with the International Space Station Sunday. SpaceX is demonstrating the potential for a company to carry astronauts into orbit.</description>
+			<pubDate>Sat, 02 Mar 2019 03:22:54 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/02/699650890/spacex-launches-unmanned-capsule-to-international-space-station?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/02/699650890/spacex-launches-unmanned-capsule-to-international-space-station?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/02/ap_19061289781454_wide-70014afa70b536078bb2c1a8543b9a703f07f9e0.jpg?s=600' alt='A SpaceX Falcon 9 rocket and Crew Dragon capsule lifts off from pad 39A on Saturday in Cape Canaveral, Fla.'/><p>SpaceX's Crew Dragon capsule successfully docked with the International Space Station Sunday. SpaceX is demonstrating the potential for a company to carry astronauts into orbit.</p><p>(Image credit: Terry Renna/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=699650890' />]]>
+			</content:encoded>
+			<dc:creator>James Doubek</dc:creator>
+		</item>
+		<item>
+			<title>'Mama's Last Hug' Makes Case That Humans Are Not Alone In Experiencing Emotions</title>
+			<description>In his new book, primate behavior researcher Frans de Waal writes that "emotions are everywhere in the animal kingdom, from fish to birds to insects and even in brainy mollusks such as the octopus."</description>
+			<pubDate>Fri, 01 Mar 2019 10:14:00 -0500</pubDate>
+			<link>https://www.npr.org/2019/03/01/698902400/mamas-last-hug-makes-case-that-humans-are-not-alone-in-experiencing-emotions?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/2019/03/01/698902400/mamas-last-hug-makes-case-that-humans-are-not-alone-in-experiencing-emotions?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/03/01/gettyimages-74056844_wide-2d0db5cca13a4f98c8a5f3c00ecdafcbfcef234f.jpg?s=600' alt='Mama celebrates her 50th birthday on May 3, 2007, with fruit and vegetables at the Burgers Zoo in Arnhem, Holland.'/><p>In his new book, primate behavior researcher Frans de Waal writes that "emotions are everywhere in the animal kingdom, from fish to birds to insects and even in brainy mollusks such as the octopus."</p><p>(Image credit: AFP/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=698902400' />]]>
+			</content:encoded>
+			<dc:creator>Barbara J. King</dc:creator>
+		</item>
+		<item>
+			<title>Your Questions About Italy's GMO Mosquito Experiment, Answered</title>
+			<description>What are some of the leading arguments against this experiment? What happens to other species in the food chain? Isn't developing a vaccine a better way to go?</description>
+			<pubDate>Fri, 01 Mar 2019 10:09:22 -0500</pubDate>
+			<link>https://www.npr.org/sections/goatsandsoda/2019/03/01/698708765/your-questions-about-italys-gmo-mosquito-experiment-answered?utm_medium=RSS&amp;utm_campaign=science</link>
+			<guid>https://www.npr.org/sections/goatsandsoda/2019/03/01/698708765/your-questions-about-italys-gmo-mosquito-experiment-answered?utm_medium=RSS&amp;utm_campaign=science</guid>
+			<content:encoded>
+				<![CDATA[<img src='https://media.npr.org/assets/img/2019/02/28/genedrivefinal-3_wide-66b4822415a545c5b5f967be10ac8e94c6f8e3ec.jpg?s=600' alt='Genetically modified "gene drive" mosquitoes feed on warm cow's blood. Scientists hope these mosquitoes could help eradicate malaria.'/><p>What are some of the leading arguments against this experiment? What happens to other species in the food chain? Isn't developing a vaccine a better way to go?</p><p>(Image credit: Pierre Kattar for NPR)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=698708765' />]]>
+			</content:encoded>
+			<dc:creator>Rob Stein</dc:creator>
+		</item>
+	</channel>
+</rss>

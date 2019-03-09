@@ -1,25 +1,18 @@
 package world.ouer.rss;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
-
 import java.util.List;
-
-import world.ouer.rss.Channel.SubscribeMeta;
-
+import world.ouer.rss.channel.SubscribeMeta;
 /**
  * Created by pc on 2019/3/7.
  */
-
 public class SideSubscribeSourceAdapter extends AbsRssAdapter<SubscribeMeta>
         implements AbsRssAdapter.IRssViewHolder{
-
     public SideSubscribeSourceAdapter(Context mCtx, List<SubscribeMeta> source) {
         super(mCtx, source);
         setIRssViewHolder(this);
     }
-
     @Override
     public int childItemViewId() {
         return R.layout.side_subscribe_source_item;
@@ -30,7 +23,7 @@ public class SideSubscribeSourceAdapter extends AbsRssAdapter<SubscribeMeta>
         SubscribeMeta item = (SubscribeMeta) o;
         SideSubscribeViewHolder childHolder = (SideSubscribeViewHolder) holder;
         childHolder.tv1.setText(item.title);
-        childHolder.tv2.setText(item.updateItems);
+        childHolder.tv2.setText(String.valueOf(item.updateItems));
 
     }
 

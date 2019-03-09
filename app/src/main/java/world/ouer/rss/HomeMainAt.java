@@ -1,5 +1,6 @@
 package world.ouer.rss;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,15 +17,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import world.ouer.rss.Channel.SubscribeMeta;
+import world.ouer.rss.channel.SubscribeMeta;
+import world.ouer.rss.dao.DaoSession;
+import world.ouer.rss.dao.SourceItem;
+import world.ouer.rss.net.RssAsyncService;
 
-public class Main2Activity extends AppCompatActivity
+public class HomeMainAt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
 
 
     @BindView(R.id.sourceRv)
@@ -36,6 +42,7 @@ public class Main2Activity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        setTitle("");
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +66,6 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         initRecyLv();
     }
 
@@ -74,6 +80,11 @@ public class Main2Activity extends AppCompatActivity
         sourceRv.setAdapter(sideAdapter);
         sourceRv.setLayoutManager(new LinearLayoutManager(this));
         sourceRv.setItemAnimator(new DefaultItemAnimator());
+    }
+
+
+    public void addSource(View view){
+        startActivity(new Intent(this,AddRssSourceAt.class));
     }
 
     @Override
@@ -102,6 +113,9 @@ public class Main2Activity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.sync) {
 
+            DaoSession session =((RssApplication)getApplication()).daoSession();
+            List<SourceItem> urls =session.getSourceItemDao().loadAll();
+            new RssAsyncService(session.getRssItemDao(),this).execute(toArrays(urls));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -130,5 +144,22 @@ public class Main2Activity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private URL[] toArrays(List<SourceItem> sources){
+        int size=sources.size();
+        if(size==0){
+            return new URL[0];
+        }
+        URL[] urls=new URL[size];
+        for(int i=0;i<size;i++){
+            try {
+                urls[i]=new URL(sources.get(i).getUrl());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        return  urls;
     }
 }

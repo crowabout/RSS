@@ -14,31 +14,37 @@
  * limitations under the License.
  */
 
-package world.ouer.rss;
+package world.ouer.rss.dao;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
+/**
+ * this table store the node info in RSS xml files.
+ */
 @Entity(nameInDb = "RSS")
-public class RssItem implements Comparable<RssItem>, Parcelable {
+public class RssItem implements Parcelable {
 
 	@Id(autoincrement = true)
 	Long id;
 	String title;
+	/**
+	 * the link to html page
+	 */
 	String link;
-	Date pubDate;
+	String pubDate;
 	String description;
 	String content;
 	String channel;
+	/**
+	 * the link to attachment
+	 */
+	String enclosure;
+	String guid;
 
 	public RssItem() {
 		
@@ -49,15 +55,17 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 		Bundle data = source.readBundle();
 		title = data.getString("title");
 		link = data.getString("link");
-		pubDate = (Date) data.getSerializable("pubDate");
+		pubDate =data.getString("pubDate");
 		description = data.getString("description");
 		content = data.getString("content");
+		enclosure = data.getString("enclosure");
+		guid= data.getString("guid");
 
 	}
 
-	@Generated(hash = 1507889815)
-	public RssItem(Long id, String title, String link, Date pubDate, String description, String content,
-									String channel) {
+	@Generated(hash = 1950487654)
+	public RssItem(Long id, String title, String link, String pubDate, String description,
+									String content, String channel, String enclosure, String guid) {
 					this.id = id;
 					this.title = title;
 					this.link = link;
@@ -65,8 +73,9 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 					this.description = description;
 					this.content = content;
 					this.channel = channel;
+					this.enclosure = enclosure;
+					this.guid = guid;
 	}
-
 
 
 	@Override
@@ -75,9 +84,12 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 		Bundle data = new Bundle();
 		data.putString("title", title);
 		data.putString("link", link);
-		data.putSerializable("pubDate", pubDate);
+		data.putString("pubDate", pubDate);
 		data.putString("description", description);
 		data.putString("content", content);
+		data.putString("enclosure", enclosure);
+		data.putString("guid", guid);
+
 		dest.writeBundle(data);
 	}
 	
@@ -111,21 +123,20 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 		this.link = link;
 	}
 
-	public Date getPubDate() {
-		return pubDate;
-	}
-
-	public void setPubDate(Date pubDate) {
-		this.pubDate = pubDate;
-	}
-
 	public void setPubDate(String pubDate) {
-		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
-			this.pubDate = dateFormat.parse(pubDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+	    this.pubDate=pubDate;
+//		try {
+//			Log.i("PUBDATE", "o: "+pubDate);
+//			pubDate=pubDate.replaceAll("[A-Z]{3}$","-0000");
+//			Log.i("PUBDATE", "r1: "+pubDate);
+//		    pubDate=pubDate.replaceAll("-[0-9]{4}$","");
+//			Log.i("PUBDATE", "r2: "+pubDate);
+//			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+//			this.pubDate = dateFormat.parse(pubDate);
+//		} catch (ParseException e) {
+//			Log.e("RSSITEM", "setPubDate: "+pubDate );
+//			e.printStackTrace();
+//		}
 	}
 
 	public String getDescription() {
@@ -144,14 +155,14 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 		this.content = content;
 	}
 
-	@Override
-	public int compareTo(RssItem another) {
-		if(getPubDate() != null && another.getPubDate() != null) {
-			return getPubDate().compareTo(another.getPubDate());
-		} else { 
-			return 0;
-		}
-	}
+//	@Override
+//	public int compareTo(RssItem another) {
+//		if(getPubDate() != null && another.getPubDate() != null) {
+//			return getPubDate().compareTo(another.getPubDate());
+//		} else {
+//			return 0;
+//		}
+//	}
 
 	public Long getId() {
 					return this.id;
@@ -161,14 +172,6 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 					this.id = id;
 	}
 
-	public String getCategory() {
-		return channel;
-	}
-
-	public void setCategory(String channel) {
-		this.channel = channel;
-	}
-
 	public String getChannel() {
 					return this.channel;
 	}
@@ -176,4 +179,26 @@ public class RssItem implements Comparable<RssItem>, Parcelable {
 	public void setChannel(String channel) {
 					this.channel = channel;
 	}
+
+	public String getEnclosure() {
+					return this.enclosure;
+	}
+
+	public void setEnclosure(String enclosure) {
+					this.enclosure = enclosure;
+	}
+
+	public String getGuid() {
+					return this.guid;
+	}
+
+	public void setGuid(String guid) {
+					this.guid = guid;
+	}
+
+	public String getPubDate() {
+					return this.pubDate;
+	}
+
+
 }

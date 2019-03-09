@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.greenrobot.greendao.database.Database;
 
+import world.ouer.rss.channel.IEmbedRss;
+import world.ouer.rss.dao.DaoMaster;
+
 /**
  * Created by pc on 2017/1/10.
  */
@@ -22,6 +25,17 @@ public class RssOpenHelper
     @Override
     public void onCreate(Database db) {
         super.onCreate(db);
+
+
+        String cnn="insert into sources values (null,\'"+ IEmbedRss.RSS_CNN+"\','CNN',date('now'),"+IEmbedRss.RSS_CNN.hashCode()+")";
+        String sc6="insert into sources values (null,\'"+ IEmbedRss.RSS_SCIENTIFIC_AMERICAN+"\','ScientificAmerican',date('now'),"+IEmbedRss.RSS_SCIENTIFIC_AMERICAN.hashCode()+")";
+        String ntp="insert into sources values (null,\'"+ IEmbedRss.RSS_NPR+"\','NPR',date('now'),"+IEmbedRss.RSS_NPR.hashCode()+")";
+        String reuters="insert into sources values (null,\'"+ IEmbedRss.RSS_REUTERS+"\','REUTERS',date('now'),"+IEmbedRss.RSS_REUTERS.hashCode()+")";
+
+        db.execSQL(cnn);
+        db.execSQL(sc6);
+        db.execSQL(ntp);
+        db.execSQL(reuters);
 
     }
 

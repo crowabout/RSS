@@ -24,5 +24,7 @@
         <item>http://feeds.reuters.com/reuters/worldNews</item>
     </string-array>
 
+
+
     <string name="addSource">添加RSS源</string>
 </resources>

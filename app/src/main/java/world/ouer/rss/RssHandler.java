@@ -16,81 +16,117 @@
 
 package world.ouer.rss;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import world.ouer.rss.dao.RssItem;
+
 public class RssHandler extends DefaultHandler {
-	
-	private RssFeed rssFeed;
-	private RssItem rssItem;
-	private StringBuilder stringBuilder;
+    private static final String TAG = "RssHandler";
+    private RssFeed rssFeed;
+    private RssItem rssItem;
+    private StringBuilder stringBuilder;
+    private PositionInXml where = PositionInXml.POSITION_IN_CHANNEL;
 
-	@Override
-	public void startDocument() {
-		rssFeed = new RssFeed();
-	}
-	
-	/**
-	 * Return the parsed RssFeed with it's RssItems
-	 * @return
-	 */
-	public RssFeed getResult() {
-		return rssFeed;
-	}
+    @Override
+    public void startDocument() {
+        rssFeed = new RssFeed();
+        stringBuilder = new StringBuilder();
+    }
 
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) {
-		stringBuilder = new StringBuilder();
-		if(qName.equals("item") && rssFeed != null) {
-			rssItem = new RssItem();
-			rssFeed.addRssItem(rssItem);
-		}
-	}
+    /**
+     * Return the parsed RssFeed with it's RssItems
+     *
+     * @return
+     */
+    public RssFeed getResult() {
+        return rssFeed;
+    }
 
-	@Override
-	public void characters(char[] ch, int start, int length) {
-		stringBuilder.append(ch, start, length);
-	}
-	
-	@Override
-	public void endElement(String uri, String localName, String qName) {
-		
-		if(rssFeed != null && rssItem == null) {
-			// Parse feed properties
-			
-			try {
-				if (qName != null && qName.length() > 0) {
-				    String methodName = "set" + qName.substring(0, 1).toUpperCase() + qName.substring(1);
-				    Method method = rssFeed.getClass().getMethod(methodName, String.class);
-				    method.invoke(rssFeed, stringBuilder.toString());
-				}
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InvocationTargetException e) {
-			}
-			
-		} else if (rssItem != null) {
-			// Parse item properties
-			
-			try {
-				if(qName.equals("content:encoded")) 
-					qName = "content";
-				String methodName = "set" + qName.substring(0, 1).toUpperCase() + qName.substring(1);
-				Method method = rssItem.getClass().getMethod(methodName, String.class);
-				method.invoke(rssItem, stringBuilder.toString());
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InvocationTargetException e) {
-			}
-		}
-		
-	}
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
+        Log.i(TAG, String.format("startEle %s\t%s\t%s",uri,localName,qName));
+
+        if (localName.equalsIgnoreCase("item")) {
+            where = PositionInXml.POSITION_IN_ITEM;
+        }
+
+        if (where == PositionInXml.POSITION_IN_ITEM) {
+            if (localName.equalsIgnoreCase("item")) {
+                rssItem = new RssItem();
+                rssFeed.addRssItem(rssItem);
+            }
+            if(attributes!=null && qName.equalsIgnoreCase("enclosure")){
+                int index=attributes.getIndex("url");
+                if(index!=-1){
+                    String value =attributes.getValue(index);
+                    rssItem.setEnclosure(value);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void characters(char[] ch, int start, int length) {
+        stringBuilder.append(ch, start, length);
+        Log.i("CHAR_U", ">>>>_: "+stringBuilder.toString());
+        Log.i("CHAR_D","<<<<:"+String.valueOf(ch,start,length));
+
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) {
+
+        Log.i(TAG, String.format("endEle  %s\t%s\t%s",uri,localName,qName));
+
+        if (localName.equalsIgnoreCase("item")) {
+            where = PositionInXml.POSITION_IN_CHANNEL;
+        }
+
+        String methodName = "set" + localName.substring(0, 1).toUpperCase() + localName.substring(1);
+        Method method = null;
+        try {
+
+            switch (where) {
+                case POSITION_IN_ITEM:
+                    method = rssItem.getClass().getMethod(methodName, String.class);
+                    String value =stringBuilder.toString().trim();
+                    if (!TextUtils.isEmpty(value)) {
+                        method.invoke(rssItem, value);
+                    }
+                    rssItem.setChannel(rssFeed.getTitle());
+                    break;
+                case POSITION_IN_CHANNEL:
+                    method = rssFeed.getClass().getMethod(methodName, String.class);
+                    method.invoke(rssFeed, stringBuilder.toString().trim());
+                    break;
+            }
+        } catch (NoSuchMethodException e) {
+            Log.w(TAG, "endElement: " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        stringBuilder.setLength(0);
+    }
+
+    private enum PositionInXml {
+        /**
+         * below channel node and above item node.
+         */
+        POSITION_IN_CHANNEL,
+        /**
+         * in item node.
+         */
+        POSITION_IN_ITEM;
+
+    }
 
 }

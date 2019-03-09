@@ -22,6 +22,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import world.ouer.rss.dao.RssItem;
+
 public class RssFeed implements Parcelable {
 
 	private String title;

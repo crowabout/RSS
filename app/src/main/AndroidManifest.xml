@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".RssApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".DownManagerAt" />
         <activity
-            android:name=".Main2Activity"
+            android:name=".HomeMainAt"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,11 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".RssAsyncService"
-            android:enabled="true"
-            android:exported="true"></service>
+        <activity android:name=".AddRssSourceAt"></activity>
     </application>
 
 </manifest>

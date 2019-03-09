@@ -2,15 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/padding"
     android:orientation="vertical">
     <TextView
         android:id="@+id/side_subscribe_source_tv1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/largeSize"
         android:text="title" />
     <TextView
         android:id="@+id/side_subscribe_source_tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/smallSize"
         android:text="amount" />
 </LinearLayout>
