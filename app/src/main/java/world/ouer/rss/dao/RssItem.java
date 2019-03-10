@@ -126,15 +126,11 @@ public class RssItem implements Parcelable {
 	public void setPubDate(String pubDate) {
 	    this.pubDate=pubDate;
 //		try {
-//			Log.i("PUBDATE", "o: "+pubDate);
 //			pubDate=pubDate.replaceAll("[A-Z]{3}$","-0000");
-//			Log.i("PUBDATE", "r1: "+pubDate);
 //		    pubDate=pubDate.replaceAll("-[0-9]{4}$","");
-//			Log.i("PUBDATE", "r2: "+pubDate);
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
 //			this.pubDate = dateFormat.parse(pubDate);
 //		} catch (ParseException e) {
-//			Log.e("RSSITEM", "setPubDate: "+pubDate );
 //			e.printStackTrace();
 //		}
 	}

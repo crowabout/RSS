@@ -11,6 +11,8 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import world.ouer.rss.channel.IEmbedRss;
@@ -104,6 +106,60 @@ public class ExampleInstrumentedTest {
 //        assertEquals(sb.toString(),"abc");
 
         assertEquals(pubDate,r2);
+
+    }
+
+
+    @Test
+    public void digestTest() throws Exception{
+
+        /*
+         *                              xxxxxxxx
+         *   00000000 00000000 00000000 11111111
+         * & -------------------------------------
+         *   00000000 00000000 00000000 FF
+         *
+         *
+         *   1010111
+         *   1111111
+         * |---------
+         *   1111111
+         *
+         *   1010111
+         *   0000000
+         * |----------
+         *   1010111
+         */
+        byte b =11;
+        int m =0xFF_FF_FF_FF;
+        int x =1111_111;
+        String hexb =Integer.toHexString(0x1FF);
+        String hexr =Integer.toHexString(x & 0x000000FF);
+        String hexs =Integer.toHexString(x & 0xFF);
+
+        assertEquals(hexb,"01FF");
+
+    }
+
+    @Test
+    public void formatNum()throws  Exception{
+
+        int x =0xF;
+        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+        df.applyPattern("00");
+        String s=df.format(x);
+        assertEquals("01",s);
+
+    }
+
+
+
+    @Test
+    public void testDigest() throws  Exception{
+
+        String s =RssUtils.sha1("abc");
+
+        assertEquals(s.toUpperCase(),s);
 
     }
 
