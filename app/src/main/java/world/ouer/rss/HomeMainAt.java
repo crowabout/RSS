@@ -2,6 +2,8 @@ package world.ouer.rss;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -16,9 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,6 +105,18 @@ public class HomeMainAt extends AppCompatActivity
         return true;
     }
 
+    private Handler handler =new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case RssAsyncService.MESSAGE_UPDATE_NUM:
+                    Toast.makeText(HomeMainAt.this, String.valueOf(msg.obj), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return true;
+        }
+    });
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -112,11 +125,12 @@ public class HomeMainAt extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.sync) {
-
             DaoSession session =((RssApplication)getApplication()).daoSession();
             List<SourceItem> urls =session.getSourceItemDao().loadAll();
-            new RssAsyncService(session.getRssItemDao(),this).execute(toArrays(urls));
+            new RssAsyncService(session,handler).execute(urls);
             return true;
+        }else if(id==R.id.downloadManager){
+            startActivity(new Intent(this,DownManagerAt.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -140,26 +154,15 @@ public class HomeMainAt extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private boolean isSync(String formatTime){
 
-    private URL[] toArrays(List<SourceItem> sources){
-        int size=sources.size();
-        if(size==0){
-            return new URL[0];
-        }
-        URL[] urls=new URL[size];
-        for(int i=0;i<size;i++){
-            try {
-                urls[i]=new URL(sources.get(i).getUrl());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-        return  urls;
+
+
+        return false;
     }
 }

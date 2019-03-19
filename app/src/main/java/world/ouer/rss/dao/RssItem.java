@@ -15,6 +15,7 @@
  */
 
 package world.ouer.rss.dao;
+
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -28,7 +29,6 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity(nameInDb = "RSS")
 public class RssItem implements Parcelable {
-
 	@Id(autoincrement = true)
 	Long id;
 	String title;
@@ -45,6 +45,8 @@ public class RssItem implements Parcelable {
 	 */
 	String enclosure;
 	String guid;
+	boolean isDownloaded=false;
+	long sid;
 
 	public RssItem() {
 		
@@ -63,9 +65,10 @@ public class RssItem implements Parcelable {
 
 	}
 
-	@Generated(hash = 1950487654)
+	@Generated(hash = 1845002354)
 	public RssItem(Long id, String title, String link, String pubDate, String description,
-									String content, String channel, String enclosure, String guid) {
+									String content, String channel, String enclosure, String guid,
+									boolean isDownloaded, long sid) {
 					this.id = id;
 					this.title = title;
 					this.link = link;
@@ -75,8 +78,9 @@ public class RssItem implements Parcelable {
 					this.channel = channel;
 					this.enclosure = enclosure;
 					this.guid = guid;
+					this.isDownloaded = isDownloaded;
+					this.sid = sid;
 	}
-
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -195,6 +199,23 @@ public class RssItem implements Parcelable {
 	public String getPubDate() {
 					return this.pubDate;
 	}
+
+	public boolean getIsDownloaded() {
+					return this.isDownloaded;
+	}
+
+	public void setIsDownloaded(boolean isDownloaded) {
+					this.isDownloaded = isDownloaded;
+	}
+
+	public long getSid() {
+					return this.sid;
+	}
+
+	public void setSid(long sid) {
+					this.sid = sid;
+	}
+
 
 
 }

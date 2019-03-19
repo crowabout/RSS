@@ -24,6 +24,8 @@ public class RssApplication extends Application {
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
         FileDownloader.setup(this);
+
+        RssUtils.creatStorePlace();
     }
 
 

@@ -51,8 +51,7 @@ public class RssHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        Log.i(TAG, String.format("startEle %s\t%s\t%s",uri,localName,qName));
-
+//        Log.i(TAG, String.format("startEle %s\t%s\t%s",uri,localName,qName));
         if (localName.equalsIgnoreCase("item")) {
             where = PositionInXml.POSITION_IN_ITEM;
         }
@@ -75,16 +74,14 @@ public class RssHandler extends DefaultHandler {
     @Override
     public void characters(char[] ch, int start, int length) {
         stringBuilder.append(ch, start, length);
-        Log.i("CHAR_U", ">>>>_: "+stringBuilder.toString());
-        Log.i("CHAR_D","<<<<:"+String.valueOf(ch,start,length));
+//        Log.i("CHAR_U", ">>>>_: "+stringBuilder.toString());
+//        Log.i("CHAR_D","<<<<:"+String.valueOf(ch,start,length));
 
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-
-        Log.i(TAG, String.format("endEle  %s\t%s\t%s",uri,localName,qName));
-
+//        Log.i(TAG, String.format("endEle  %s\t%s\t%s",uri,localName,qName));
         if (localName.equalsIgnoreCase("item")) {
             where = PositionInXml.POSITION_IN_CHANNEL;
         }

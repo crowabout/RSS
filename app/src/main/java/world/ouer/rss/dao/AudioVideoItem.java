@@ -32,28 +32,24 @@ public class AudioVideoItem {
     /**
      * file size
      */
-    String length;
-
+    float length;
     /**
      * has access?
      */
     boolean isRead;
-
     /**
      *  which channel the file belong to.
      */
     String channel;
 
     String date;
-
     /**
      * file name without special characters(?_$...)
      */
     String canonicalName;
-
-    @Generated(hash = 1691050388)
+    @Generated(hash = 1808320235)
     public AudioVideoItem(Long id, String originName, String fileType,
-            String storePath, String length, boolean isRead, String channel,
+            String storePath, float length, boolean isRead, String channel,
             String date, String canonicalName) {
         this.id = id;
         this.originName = originName;
@@ -65,83 +61,63 @@ public class AudioVideoItem {
         this.date = date;
         this.canonicalName = canonicalName;
     }
-
     @Generated(hash = 246076218)
     public AudioVideoItem() {
     }
-
     public Long getId() {
         return this.id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getOriginName() {
         return this.originName;
     }
-
     public void setOriginName(String originName) {
         this.originName = originName;
     }
-
     public String getFileType() {
         return this.fileType;
     }
-
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
-
     public String getStorePath() {
         return this.storePath;
     }
-
     public void setStorePath(String storePath) {
         this.storePath = storePath;
     }
-
-    public String getLength() {
+    public float getLength() {
         return this.length;
     }
-
-    public void setLength(String length) {
+    public void setLength(float length) {
         this.length = length;
     }
-
     public boolean getIsRead() {
         return this.isRead;
     }
-
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
     }
-
     public String getChannel() {
         return this.channel;
     }
-
     public void setChannel(String channel) {
         this.channel = channel;
     }
-
     public String getDate() {
         return this.date;
     }
-
     public void setDate(String date) {
         this.date = date;
     }
-
     public String getCanonicalName() {
         return this.canonicalName;
     }
-
     public void setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
     }
-
 
 
 

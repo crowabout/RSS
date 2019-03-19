@@ -26,14 +26,17 @@ public class SourceItem {
      * used to distinguish different url.
      */
     protected long hashcode;
-    @Generated(hash = 585979621)
+    private String lastTimeAccess;
+
+    @Generated(hash = 1507562486)
     public SourceItem(Long id, String url, String channel, Date addDate,
-            long hashcode) {
+            long hashcode, String lastTimeAccess) {
         this.id = id;
         this.url = url;
         this.channel = channel;
         this.addDate = addDate;
         this.hashcode = hashcode;
+        this.lastTimeAccess = lastTimeAccess;
     }
     @Generated(hash = 2098034463)
     public SourceItem() {
@@ -67,6 +70,12 @@ public class SourceItem {
     }
     public void setHashcode(long hashcode) {
         this.hashcode = hashcode;
+    }
+    public String getLastTimeAccess() {
+        return this.lastTimeAccess;
+    }
+    public void setLastTimeAccess(String lastTimeAccess) {
+        this.lastTimeAccess = lastTimeAccess;
     }
 
 

@@ -156,11 +156,35 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testDigest() throws  Exception{
-
         String s =RssUtils.sha1("abc");
-
         assertEquals(s.toUpperCase(),s);
-
     }
 
+    @Test
+    public void testReplace() throws Exception{
+        String name="CNN (Video 10)";
+        name =name.replaceAll("[^\\w]","");
+        assertEquals("CNNVideo10",name);
+    }
+
+    @Test
+    public void tttt() throws  Exception{
+            String path ="/mnt/sdcard/ouer.world.rss/CNN10video/807465c0c9ddd24f3af8f7a8420bc9ef6a73e6af";
+        int firstSlashFromEnd =path.lastIndexOf("/");
+        int secSlashFromEnd =path.lastIndexOf("/",firstSlashFromEnd-1);
+        String s= path.substring(secSlashFromEnd+1,firstSlashFromEnd);
+            assertEquals(s,"CNN10video");
+    }
+
+    @Test
+    public void testExtractType() throws Exception{
+
+        assertEquals("45M",RssUtils.toMb(456996544));
+    }
+
+
+
+
+
 }
+

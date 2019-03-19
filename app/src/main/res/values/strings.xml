@@ -24,7 +24,10 @@
         <item>http://feeds.reuters.com/reuters/worldNews</item>
     </string-array>
 
-
+    <string name="stat">e/d/t: %d %d %d </string>
+    <string name="downloaded">downloaded:%s</string>
+    <string name="residue">residue:%s</string>
+    <string name="downloadMgr">downloadManager</string>
 
     <string name="addSource">添加RSS源</string>
 </resources>
