@@ -14,8 +14,8 @@ import java.util.List;
 public abstract class AbsRssAdapter<T>  extends RecyclerView.Adapter<AbsRssAdapter.ViewHolder>
     {
 
-    private Context mCtx;
-    private List<T> source;
+     Context mCtx;
+     List<T> source;
     private IRssViewHolder mRssHolder;
     public AbsRssAdapter(Context mCtx, List<T> source) {
         this.mCtx=mCtx;

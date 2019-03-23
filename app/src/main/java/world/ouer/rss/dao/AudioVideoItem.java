@@ -30,35 +30,29 @@ public class AudioVideoItem {
      */
     String storePath;
     /**
-     * file size
-     */
-    float length;
-    /**
-     * has access?
-     */
-    boolean isRead;
-    /**
      *  which channel the file belong to.
      */
     String channel;
 
     String date;
+
+    boolean isRead;
     /**
+     *
      * file name without special characters(?_$...)
      */
     String canonicalName;
-    @Generated(hash = 1808320235)
+    @Generated(hash = 1706191448)
     public AudioVideoItem(Long id, String originName, String fileType,
-            String storePath, float length, boolean isRead, String channel,
-            String date, String canonicalName) {
+            String storePath, String channel, String date, boolean isRead,
+            String canonicalName) {
         this.id = id;
         this.originName = originName;
         this.fileType = fileType;
         this.storePath = storePath;
-        this.length = length;
-        this.isRead = isRead;
         this.channel = channel;
         this.date = date;
+        this.isRead = isRead;
         this.canonicalName = canonicalName;
     }
     @Generated(hash = 246076218)
@@ -88,11 +82,11 @@ public class AudioVideoItem {
     public void setStorePath(String storePath) {
         this.storePath = storePath;
     }
-    public float getLength() {
-        return this.length;
+    public String getChannel() {
+        return this.channel;
     }
-    public void setLength(float length) {
-        this.length = length;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
     public boolean getIsRead() {
         return this.isRead;
@@ -100,11 +94,11 @@ public class AudioVideoItem {
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
     }
-    public String getChannel() {
-        return this.channel;
+    public String getCanonicalName() {
+        return this.canonicalName;
     }
-    public void setChannel(String channel) {
-        this.channel = channel;
+    public void setCanonicalName(String canonicalName) {
+        this.canonicalName = canonicalName;
     }
     public String getDate() {
         return this.date;
@@ -112,13 +106,6 @@ public class AudioVideoItem {
     public void setDate(String date) {
         this.date = date;
     }
-    public String getCanonicalName() {
-        return this.canonicalName;
-    }
-    public void setCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-    }
-
 
 
 

@@ -31,6 +31,7 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
     private SourceItemDao sDao;
     private Handler homeHandler;
     public static final int MESSAGE_UPDATE_NUM=1;
+    public static final int MESSAGE_UPDATE_FAIL=2;
     public RssAsyncService(DaoSession session, Handler handler) {
         this.session=session;
         homeHandler=handler;
@@ -47,7 +48,7 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
                 client.asynRun(item.getUrl(), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        homeHandler.obtainMessage(MESSAGE_UPDATE_NUM,e.getMessage());
+                        homeHandler.obtainMessage(MESSAGE_UPDATE_FAIL,e.getMessage()).sendToTarget();
                     }
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
@@ -88,7 +89,7 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
                 iterator.next().setSid(id);
             }
             rDao.saveInTx(rssItems);
-            homeHandler.obtainMessage(MESSAGE_UPDATE_NUM,"store__"+rssItems.size());
+            homeHandler.obtainMessage(MESSAGE_UPDATE_NUM,"store__"+rssItems.size()).sendToTarget();
             Log.i(TAG, "store__:"+rssItems.size());
 
         } catch (SAXException e) {

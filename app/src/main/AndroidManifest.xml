@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DownManagerAt"></activity>
+        <activity android:name=".DownManagerAt" />
         <activity
             android:name=".HomeMainAt"
             android:label="@string/title_activity_main2"
@@ -24,12 +24,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".AddRssSourceAt" />
+
         <service
             android:name=".download.BgDownloadService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".PlayAvWithSubtitleAt"></activity>
+
+        <activity android:name=".play.PlayAudioActivity"></activity>
     </application>
 
 </manifest>

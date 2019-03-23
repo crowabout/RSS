@@ -46,6 +46,7 @@ public class RssItem implements Parcelable {
 	String enclosure;
 	String guid;
 	boolean isDownloaded=false;
+	boolean isRead;
 	long sid;
 
 	public RssItem() {
@@ -65,10 +66,10 @@ public class RssItem implements Parcelable {
 
 	}
 
-	@Generated(hash = 1845002354)
+	@Generated(hash = 2125876967)
 	public RssItem(Long id, String title, String link, String pubDate, String description,
 									String content, String channel, String enclosure, String guid,
-									boolean isDownloaded, long sid) {
+									boolean isDownloaded, boolean isRead, long sid) {
 					this.id = id;
 					this.title = title;
 					this.link = link;
@@ -79,8 +80,11 @@ public class RssItem implements Parcelable {
 					this.enclosure = enclosure;
 					this.guid = guid;
 					this.isDownloaded = isDownloaded;
+					this.isRead = isRead;
 					this.sid = sid;
 	}
+
+
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -214,6 +218,14 @@ public class RssItem implements Parcelable {
 
 	public void setSid(long sid) {
 					this.sid = sid;
+	}
+
+	public boolean getIsRead() {
+					return this.isRead;
+	}
+
+	public void setIsRead(boolean isRead) {
+					this.isRead = isRead;
 	}
 
 

@@ -15,29 +15,44 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import world.ouer.rss.channel.SubscribeMeta;
 import world.ouer.rss.dao.DaoSession;
+import world.ouer.rss.dao.DataQueryTools;
+import world.ouer.rss.dao.RssItem;
 import world.ouer.rss.dao.SourceItem;
 import world.ouer.rss.net.RssAsyncService;
 
 public class HomeMainAt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    private static final String TAG = "HomeMainAt";
     @BindView(R.id.sourceRv)
-     RecyclerView sourceRv;
+    RecyclerView sourceRv;
+
+    @BindView(R.id.RvMain)
+    RecyclerView rvMain;
+    private int pageIndex = 0;
 
     private SideSubscribeSourceAdapter sideAdapter;
+    private MainPageNewsAdapter mMainPageAdapter;
+    private DataQueryTools dqt;
+
+    private boolean isLoadMore = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,26 +81,69 @@ public class HomeMainAt extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        initDqt();
 
-        initRecyLv();
+        initSideRecyLv();
+        initMainRecyLv();
     }
 
 
+    private void initDqt() {
+        DaoSession session = ((RssApplication) getApplication()).daoSession();
+        dqt = new DataQueryTools(session);
 
-    private void initRecyLv(){
-        SubscribeMeta sub1 =new SubscribeMeta("CNN");
-        SubscribeMeta sub2 =new SubscribeMeta("60-Scientific American");
-        if(sideAdapter==null){
-            sideAdapter=new SideSubscribeSourceAdapter(this, Arrays.asList(sub1,sub2));
+    }
+
+    private void initSideRecyLv() {
+
+        List<SourceItem> source = dqt.queryAllSourceItem();
+        if (sideAdapter == null) {
+            sideAdapter = new SideSubscribeSourceAdapter(this, source);
         }
         sourceRv.setAdapter(sideAdapter);
         sourceRv.setLayoutManager(new LinearLayoutManager(this));
         sourceRv.setItemAnimator(new DefaultItemAnimator());
     }
 
+    private void initMainRecyLv() {
+        List<RssItem> source = dqt.queryRssItem(pageIndex);
+        mMainPageAdapter = new MainPageNewsAdapter(this, source);
+        rvMain.setAdapter(mMainPageAdapter);
+        rvMain.setLayoutManager(new LinearLayoutManager(this));
+        rvMain.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int last = llm.findLastCompletelyVisibleItemPosition();
+                    int count = llm.getItemCount();
+                    Log.d(TAG, String.format("last:%d count:%d isLoadMore:%b", last, count, isLoadMore));
+                    if (isLoadMore && (count - 1) == last) {
+                        Log.i(TAG, "onScrollStateChanged: should load more");
+                        pageIndex++;
+                        loadNextpage(pageIndex);
+                    }
+                }
 
-    public void addSource(View view){
-        startActivity(new Intent(this,AddRssSourceAt.class));
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                isLoadMore = dy > 0;
+            }
+        });
+    }
+
+    private void loadNextpage(int pageIndex) {
+        List<RssItem> moredata = dqt.queryRssItem(pageIndex);
+        mMainPageAdapter.update(moredata);
+    }
+
+
+    public void addSource(View view) {
+        startActivity(new Intent(this, AddRssSourceAt.class));
     }
 
     @Override
@@ -105,17 +163,30 @@ public class HomeMainAt extends AppCompatActivity
         return true;
     }
 
-    private Handler handler =new Handler(new Handler.Callback() {
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case RssAsyncService.MESSAGE_UPDATE_NUM:
+                    Toast.makeText(HomeMainAt.this, String.valueOf(msg.obj), Toast.LENGTH_SHORT).show();
+                    if(!hasLoad){
+                       notifyUpdate();
+                    }
+                    break;
+                case RssAsyncService.MESSAGE_UPDATE_FAIL:
                     Toast.makeText(HomeMainAt.this, String.valueOf(msg.obj), Toast.LENGTH_SHORT).show();
                     break;
             }
             return true;
         }
     });
+
+
+    boolean hasLoad=false;
+    private void notifyUpdate(){
+        hasLoad=true;
+        loadNextpage(pageIndex);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -125,12 +196,17 @@ public class HomeMainAt extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.sync) {
-            DaoSession session =((RssApplication)getApplication()).daoSession();
-            List<SourceItem> urls =session.getSourceItemDao().loadAll();
-            new RssAsyncService(session,handler).execute(urls);
+            if (isSync()) {
+                DaoSession session = ((RssApplication) getApplication()).daoSession();
+                List<SourceItem> urls = session.getSourceItemDao().loadAll();
+                new RssAsyncService(session, handler).execute(urls);
+            }
             return true;
-        }else if(id==R.id.downloadManager){
-            startActivity(new Intent(this,DownManagerAt.class));
+        } else if (id == R.id.downloadManager) {
+
+            startActivity(new Intent(this, DownManagerAt.class));
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -140,29 +216,36 @@ public class HomeMainAt extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private boolean isSync(String formatTime){
+    private boolean isSync() {
 
+        SourceItem item = dqt.querySourceItemLastAccessTime();
+        String lastUpdateTime = item.getLastTimeAccess();
+        if (TextUtils.isEmpty(lastUpdateTime)) {
+            return true;
+        }
 
+        lastUpdateTime = lastUpdateTime.replaceAll("[0-9]{2}:[0-9]{2}:[0-9]{2}\\s-[0-9]{4}", "").trim();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE,dd LLL yyyy", Locale.US);
+        try {
+            Date date = sdf.parse(lastUpdateTime);
+            Calendar nowCal = Calendar.getInstance();
 
+            Calendar cc = Calendar.getInstance();
+            cc.setTime(date);
+            if (nowCal.after(cc)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

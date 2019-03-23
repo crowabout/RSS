@@ -11,6 +11,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by pc on 2019/3/10.
@@ -103,4 +109,67 @@ public class RssUtils {
             }
         }
     }
+
+    public static  String dropHtmlTagFromStr(String str){
+        String regex ="(<.*>)";
+        Pattern p =Pattern.compile(regex,Pattern.MULTILINE);
+        Matcher m =p.matcher(str);
+        String s =m.replaceAll("");
+        return s.trim();
+    }
+
+
+    public static String guessTypeFromUrl(String url){
+        String type =extractFileTypeFromUrl(url);
+        if(type.equalsIgnoreCase("unknown")){
+            return "txt";
+        }
+        return type;
+    }
+
+
+    public static String splitTime(String time,String pattern){
+
+        if (TextUtils.isEmpty(time)) {
+            return "noTime";
+        }
+
+        String prn="EEE, dd MMM yyyy HH:mm:ss Z";
+        SimpleDateFormat sdf=new SimpleDateFormat(prn, Locale.US);
+        Date date;
+        try {
+            date =sdf.parse(time);
+        } catch (ParseException e) {
+            Log.d(TAG, "splitTime: "+e.getMessage());
+            return time;
+        }
+        if(TextUtils.isEmpty(pattern)){
+            sdf.applyPattern("HH:mm/dd/MM");
+        }else{
+            sdf.applyPattern(pattern);
+        }
+        return sdf.format(date);
+    }
+
+
+    public static String channelSimplify(String channel){
+        String ss60="60-Second Science";
+        String CNN="CNN";
+        String reuter="Reuters News";
+        String sci="Science";
+        if(channel.contains(ss60)){
+            return "SAm";
+        }
+        if(channel.contains(CNN)){
+            return "CNN";
+        }
+        if (channel.contains(sci)) {
+            return "Sci";
+        }
+        if(channel.contains(reuter)){
+            return "RET";
+        }
+        return "x";
+    }
+
 }
