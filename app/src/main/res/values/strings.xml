@@ -28,6 +28,7 @@
     <string name="downloaded">downloaded:%s</string>
     <string name="residue">residue:%s</string>
     <string name="downloadMgr">downloadManager</string>
+    <string name="test">test</string>
 
     <string name="news_stat">%s|%s|%s</string>
 

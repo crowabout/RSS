@@ -1,11 +1,11 @@
-package world.ouer.rss;
-
+package world.ouer.rss.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import java.util.List;
+import world.ouer.rss.R;
+import world.ouer.rss.RssUtils;
 import world.ouer.rss.dao.RssItem;
 
 /**
@@ -61,9 +61,9 @@ public class MainPageNewsAdapter extends AbsRssAdapter<RssItem> implements AbsRs
     // 是否下载|是否阅读|(mp3|mp4|txt)|日期|channel
     private String stat(RssItem item){
 
-        return String.format("%b|%b|%s|%s|%s",
-                item.getIsDownloaded(),
-                item.getIsRead(),
+        return String.format("%s|%s|%s|%s|%s",
+                item.getIsDownloaded()?"已下":"未下",
+                item.getIsRead()?"已读":"未读",
                 RssUtils.guessTypeFromUrl(item.getEnclosure())
                ,RssUtils.splitTime(item.getPubDate(),null)
                 ,RssUtils.channelSimplify(item.getChannel())

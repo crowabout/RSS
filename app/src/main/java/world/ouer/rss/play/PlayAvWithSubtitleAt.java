@@ -1,4 +1,4 @@
-package world.ouer.rss;
+package world.ouer.rss.play;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import world.ouer.rss.R;
 
 public class PlayAvWithSubtitleAt extends AppCompatActivity {
 

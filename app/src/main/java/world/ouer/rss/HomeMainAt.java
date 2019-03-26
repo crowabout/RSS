@@ -1,5 +1,4 @@
 package world.ouer.rss;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,16 +20,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import world.ouer.rss.adapter.AbsRssAdapter;
+import world.ouer.rss.adapter.MainPageNewsAdapter;
+import world.ouer.rss.adapter.SideSubscribeSourceAdapter;
 import world.ouer.rss.dao.DaoSession;
 import world.ouer.rss.dao.DataQueryTools;
 import world.ouer.rss.dao.RssItem;
@@ -125,7 +125,6 @@ public class HomeMainAt extends AppCompatActivity
                         loadNextpage(pageIndex);
                     }
                 }
-
             }
 
             @Override
@@ -134,6 +133,20 @@ public class HomeMainAt extends AppCompatActivity
                 isLoadMore = dy > 0;
             }
         });
+        mMainPageAdapter.setOnItemClickListener(new AbsRssAdapter.OnItemClickListener<RssItem>() {
+            @Override
+            public void onItemClick(int position, View v,RssItem item) {
+                Log.d(TAG, "_id: "+item.getId()+" position:"+position);
+
+            }
+
+            @Override
+            public void onItemLongClick(int position) {
+
+            }
+        });
+
+
     }
 
     private void loadNextpage(int pageIndex) {
@@ -203,10 +216,9 @@ public class HomeMainAt extends AppCompatActivity
             }
             return true;
         } else if (id == R.id.downloadManager) {
-
             startActivity(new Intent(this, DownManagerAt.class));
-
-
+        }else if(id==R.id.test){
+            startActivity(new Intent(this, AddRssSourceAt.class));
         }
         return super.onOptionsItemSelected(item);
     }

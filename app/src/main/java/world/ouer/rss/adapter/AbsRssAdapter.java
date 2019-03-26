@@ -1,4 +1,4 @@
-package world.ouer.rss;
+package world.ouer.rss.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -16,11 +16,13 @@ public abstract class AbsRssAdapter<T>  extends RecyclerView.Adapter<AbsRssAdapt
 
      Context mCtx;
      List<T> source;
+     OnItemClickListener mClickListener;
     private IRssViewHolder mRssHolder;
     public AbsRssAdapter(Context mCtx, List<T> source) {
         this.mCtx=mCtx;
         this.source=source;
     }
+
 
     public void setIRssViewHolder(IRssViewHolder holder){
         this.mRssHolder=holder;
@@ -34,14 +36,30 @@ public abstract class AbsRssAdapter<T>  extends RecyclerView.Adapter<AbsRssAdapt
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        T item =source.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final T item =source.get(position);
         mRssHolder.bindTxtToView(item,holder);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mClickListener!=null){
+                    mClickListener.onItemClick(position,v,item);
+                }else{
+                    throw new NullPointerException("you must set the onItemClickListener use #setOnItemClickListener(OnItemClickListener)");
+                }
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return source.size();
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mClickListener=listener;
     }
 
     abstract static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,10 +68,16 @@ public abstract class AbsRssAdapter<T>  extends RecyclerView.Adapter<AbsRssAdapt
         }
     }
 
-
     public interface IRssViewHolder<T>{
         int childItemViewId();
         void bindTxtToView(T t,ViewHolder holder);
         ViewHolder creatViewHolder(View itemView);
     }
+
+
+    public interface OnItemClickListener<T>{
+        void onItemClick(int position, View v,T item);
+        void onItemLongClick(int position);
+    }
+
 }

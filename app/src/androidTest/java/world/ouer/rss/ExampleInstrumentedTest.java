@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 import world.ouer.rss.channel.IEmbedRss;
 import world.ouer.rss.dao.RssItem;
+import world.ouer.rss.splithtml.HtmlExtractor;
+import world.ouer.rss.splithtml.NTPHtmlExtractor;
 
 import static org.junit.Assert.assertEquals;
 
@@ -181,17 +183,23 @@ public class ExampleInstrumentedTest {
         String lastUpdateTime ="Thu, 26 Jan 2017 12:01:00 -0500";
         lastUpdateTime=lastUpdateTime.replaceAll("([0-9]{2}):\1 -[0-9]{4}","");
         assertEquals(lastUpdateTime,"Thu, 26 Jan 2017");
-
     }
 
 
     @Test
     public void testExtract() throws Exception{
-        String time="Fri, 15 Mar 2019 23:02:34 -0400";
-        String s =RssUtils.splitTime(time,null);
-        assertEquals(s,"23:02/15/03");
+
+        String link="https://www.npr.org/2019/03/24/706295341/a-very-important-study-on-cheese-and-hip-hop?utm_medium=RSS&utm_campaign=science";
+        URL url =new URL(link);
+        HtmlExtractor extractor =new NTPHtmlExtractor(url);
+        extractor.extract();
+        String audioUrl =extractor.obtainAudioUrl();
+        String subtitle=extractor.obtainSubtitle();
+        assertEquals(audioUrl,subtitle);
 
     }
+
+
 
 
 

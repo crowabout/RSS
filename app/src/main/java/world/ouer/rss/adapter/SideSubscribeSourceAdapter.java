@@ -1,10 +1,11 @@
-package world.ouer.rss;
+package world.ouer.rss.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
 
+import world.ouer.rss.R;
 import world.ouer.rss.dao.SourceItem;
 
 /**
