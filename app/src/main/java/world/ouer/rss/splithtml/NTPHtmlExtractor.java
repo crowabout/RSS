@@ -1,8 +1,11 @@
 package world.ouer.rss.splithtml;
+import android.util.Log;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -13,6 +16,11 @@ public class NTPHtmlExtractor extends HtmlExtractor implements IExtractor {
     public static final String TAG="NTPHtmlExtractor";
     public NTPHtmlExtractor(URL url) {
         super(url);
+        setIExtractor(this);
+    }
+
+    public NTPHtmlExtractor(InputStream in,URL url) {
+        super(in,url);
         setIExtractor(this);
     }
 
@@ -32,9 +40,15 @@ public class NTPHtmlExtractor extends HtmlExtractor implements IExtractor {
     @Override
     public String extractSubtitle(Document docs) {
 
+
         StringBuilder sb = new StringBuilder();
-        Elements div = docs.select("div.transcript");
-        Elements ps = div.get(0).children();
+        Elements div = docs.select("div#storytext");
+        if(div.size()==0){
+            Log.e(TAG, "div =null: url"+obtainAudioUrl().toString());
+            return "div.size=0";
+        }
+
+        Elements ps = div.select("p");
         for (Element ptag : ps) {
             if (ptag.hasText() && (!ptag.hasAttr("class")))
                 sb.append(ptag.text()).append("\n\n");

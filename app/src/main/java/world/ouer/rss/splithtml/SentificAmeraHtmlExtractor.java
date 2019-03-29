@@ -4,6 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -12,10 +13,18 @@ import java.net.URL;
 
 public class SentificAmeraHtmlExtractor extends HtmlExtractor implements IExtractor {
 
+
+
     public SentificAmeraHtmlExtractor(URL url) {
         super(url);
         setIExtractor(this);
     }
+
+    public SentificAmeraHtmlExtractor(InputStream in,URL url){
+       super(in,url);
+       setIExtractor(this);
+    }
+
 
     @Override
     public String extractAudio(Document docs) {
@@ -34,13 +43,13 @@ public class SentificAmeraHtmlExtractor extends HtmlExtractor implements IExtrac
         Elements eles = doc.select("div.article-text");
         Elements pEles = eles.get(0).children();
 
-        StringBuilder sb =new StringBuilder();
+        StringBuilder sb =new StringBuilder("-------\n");
         for (Element ele : pEles) {
             if (ele.hasText()) {
-                sb.append(ele.text());
+                sb.append(ele.text()).append("\t");
             }
         }
-        sb.append("\n");
+        sb.append("\n-------\n\n");
         return sb.toString();
     }
 

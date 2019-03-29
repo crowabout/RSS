@@ -18,6 +18,8 @@ package world.ouer.rss.play;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,7 +38,7 @@ public final class MediaPlayerHolder implements PlayerAdapter {
 
     private final Context mContext;
     private MediaPlayer mMediaPlayer;
-//    private int mResourceId;
+    private Uri mResourceUri;
     private String mResourceId;
     private PlaybackInfoListener mPlaybackInfoListener;
     private ScheduledExecutorService mExecutor;
@@ -75,44 +77,48 @@ public final class MediaPlayerHolder implements PlayerAdapter {
         mPlaybackInfoListener = listener;
     }
 
-    // Implements PlaybackControl.
     @Override
     public void loadMedia(int resourceId) {
-//        mResourceId = resourceId;
-//
-//        initializeMediaPlayer();
-//
-//        AssetFileDescriptor assetFileDescriptor =
-//                mContext.getResources().openRawResourceFd(mResourceId);
-//        try {
-//            logToUI("load() {1. setDataSource}");
-//
-//        } catch (Exception e) {
-//            logToUI(e.toString());
-//        }
-//
-//        try {
-//            logToUI("load() {2. prepare}");
-//            mMediaPlayer.prepare();
-//        } catch (Exception e) {
-//            logToUI(e.toString());
-//        }
-//
-//        initializeProgressCallback();
-//        logToUI("initializeProgressCallback()");
+
+
+    }
+
+    @Override
+    public void loadMedia(Uri uri) {
+        mResourceUri=uri;
+        initializeMediaPlayer();
+        try {
+            logToUI("load() {1. setDataSource}");
+            mMediaPlayer.setDataSource(mContext,mResourceUri,null);
+
+        } catch (FileNotFoundException e) {
+            logToUI(String.format("load() {1. %s FileNotFoundException }",uri.toString()));
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            logToUI("load() {2. prepare}");
+            mMediaPlayer.prepare();
+        } catch (Exception e) {
+            logToUI(e.toString());
+        }
+
+        initializeProgressCallback();
+        logToUI("initializeProgressCallback()");
     }
 
     @Override
     public void loadMedia(String path) {
         mResourceId=path;
-
         initializeMediaPlayer();
-
         try {
-
             FileInputStream audioFile =new FileInputStream(path);
             logToUI("load() {1. setDataSource}");
             mMediaPlayer.setDataSource(audioFile.getFD());
+            audioFile.close();
+
         } catch (FileNotFoundException e) {
             logToUI(String.format("load() {1. %s FileNotFoundException }",path));
             e.printStackTrace();
@@ -166,7 +172,13 @@ public final class MediaPlayerHolder implements PlayerAdapter {
         if (mMediaPlayer != null) {
             logToUI("playbackReset()");
             mMediaPlayer.reset();
+            if (!TextUtils.isEmpty(mResourceId)) {
                 loadMedia(mResourceId);
+            }
+            if(mResourceUri!=null){
+                loadMedia(mResourceUri);
+            }
+
 
             if (mPlaybackInfoListener != null) {
                 mPlaybackInfoListener.onStateChanged(PlaybackInfoListener.State.RESET);

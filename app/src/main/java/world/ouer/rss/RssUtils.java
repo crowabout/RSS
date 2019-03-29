@@ -18,6 +18,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import world.ouer.rss.channel.IEmbedRss;
+
 /**
  * Created by pc on 2019/3/10.
  */
@@ -144,7 +146,7 @@ public class RssUtils {
             return time;
         }
         if(TextUtils.isEmpty(pattern)){
-            sdf.applyPattern("HH:mm/dd/MM");
+            sdf.applyPattern("dd/MM");
         }else{
             sdf.applyPattern(pattern);
         }
@@ -171,5 +173,20 @@ public class RssUtils {
         }
         return "x";
     }
+
+    public static ChannelType channelType(String channel){
+        ChannelType type=null;
+        channel=channel.toLowerCase();
+        if(channel.contains(IEmbedRss.CHANNEL_60_SECOND_SCIENCE)){
+            type=ChannelType.CHANNEL_TYPE_SAM;
+        }else if(channel.contains(IEmbedRss.CHANNEL_CNN)){
+        }else if(channel.contains(IEmbedRss.CHANNEL_NPR)){
+            type=ChannelType.CHANNEL_TYPE_SCI;
+        }else if(channel.contains(IEmbedRss.CHANNEL_RETURE)){
+        }
+        return type;
+    }
+
+
 
 }

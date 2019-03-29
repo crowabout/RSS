@@ -130,6 +130,7 @@ public class RssFileDownTask extends Thread {
             Log.d(TAG, String.format("task.add(%s",item.getId()));
             tasks.add(FileDownloader.getImpl().create(item.getEnclosure()).setPath(path(item.getChannel(),
                     RssUtils.sha1(item.getEnclosure()))));
+
         }
         // do not want each task's download progress's callback,
 //        queueSet.disableCallbackProgressTimes();
@@ -147,18 +148,15 @@ public class RssFileDownTask extends Thread {
     private void record(BaseDownloadTask task){
         AudioVideoItem av =new AudioVideoItem();
 
-
         String path =task.getPath();
         String url =task.getUrl();
         av.setStorePath(path);
-        av.setOriginName(task.getFilename());
         SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getInstance();
         sdf.applyPattern("yyyyMMddHHmm");
         av.setDate(sdf.format(System.currentTimeMillis()));
-        av.setIsRead(false);
-        av.setCanonicalName(url);
+        av.setOriginUrl(task.getUrl());
+        av.setUrlSha1Digest(task.getFilename());
         av.setChannel(channelInPath(path));
-//        av.setLength((float)task.getTag(LENGTH));
         av.setFileType(RssUtils.extractFileTypeFromUrl(url));
         avDao.insertOrReplace(av);
         updateIsDownloadedColumsInRss(url);
@@ -216,6 +214,7 @@ public class RssFileDownTask extends Thread {
     public long curErrorNum(){
         return downloadErrorNum;
     }
+
 
 
 }

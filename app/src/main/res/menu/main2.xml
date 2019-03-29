@@ -12,8 +12,13 @@
         android:orderInCategory="101"
         />
     <item
-        android:id="@+id/test"
-        android:title="@string/test"
+        android:id="@+id/transcript"
+        android:title="@string/transcript"
         android:orderInCategory="102"
+        />
+    <item
+        android:id="@+id/setting"
+        android:title="setting"
+        android:orderInCategory="103"
         />
 </menu>

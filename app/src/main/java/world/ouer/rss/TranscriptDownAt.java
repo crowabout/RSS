@@ -16,37 +16,30 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import world.ouer.rss.download.BgDownloadService;
+import world.ouer.rss.download.TranscriptDownService;
 
-public class DownManagerAt extends AppCompatActivity {
+public class TranscriptDownAt extends AppCompatActivity {
+
     @BindView(R.id.stat)
     TextView stat;
     @BindView(R.id.info)
     TextView info;
     @BindView(R.id.update)
     Button update;
-
-    BgDownloadService mService;
-    boolean mBound = false;
-
     @BindView(R.id.scrollV)
     ScrollView scrollView;
-
     private boolean autoScroll2Bottom = true;
+
+    TranscriptDownService mService;
+    boolean mBound = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_transcript_down_at);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Intent intent = new Intent(this, BgDownloadService.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
         initVari();
     }
 
@@ -78,24 +71,38 @@ public class DownManagerAt extends AppCompatActivity {
         });
     }
 
-
     private void updateDisplay() {
-        stat.setText(String.format(getString(R.string.stat),
-                mService.curErrorNum(),
-                mService.curDwnlodNum(),
-                mService.curUnDwnlodNum()
-        ));
-        info.append(mService.curDwnlodStat());
-        if (autoScroll2Bottom) {
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (scrollView != null) {
-                        scrollView.fullScroll(View.FOCUS_DOWN);
-                    }
-                }
-            });
-        }
+//        stat.setText(String.format(getString(R.string.stat),
+//                mService.getM(),
+//                mService.curDwnlodNum(),
+//                mService.curUnDwnlodNum()
+//        ));
+//        info.append(mService.curDwnlodStat());
+//        if (autoScroll2Bottom) {
+//            scrollView.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (scrollView != null) {
+//                        scrollView.fullScroll(View.FOCUS_DOWN);
+//                    }
+//                }
+//            });
+//        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, TranscriptDownService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        startService(new Intent(this,TranscriptDownService.class));
+
     }
 
     @Override
@@ -104,8 +111,6 @@ public class DownManagerAt extends AppCompatActivity {
         unbindService(connection);
         mBound = false;
     }
-
-
 
     /**
      * Defines callbacks for service binding, passed to bindService()
@@ -116,7 +121,7 @@ public class DownManagerAt extends AppCompatActivity {
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            BgDownloadService.LocalBinder binder = (BgDownloadService.LocalBinder) service;
+            TranscriptDownService.LocalBinder binder = (TranscriptDownService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
         }

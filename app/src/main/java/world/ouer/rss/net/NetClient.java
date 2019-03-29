@@ -30,9 +30,6 @@ public class NetClient {
     public void asynRun(String url, Callback callback) throws IOException{
         Request request =new Request.Builder()
                 .url(url)
-//                .header("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0")
-//                .header("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-//                .header("Accept-Encoding","deflate")
                 .build();
         okClient.newCall(request).enqueue(callback);
     }
@@ -41,9 +38,6 @@ public class NetClient {
     public Response synRun(String url) throws IOException{
         Request request =new Request.Builder()
                 .url(url)
-//                .header("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0")
-//                .header("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-//                .header("Accept-Encoding","deflate")
                 .build();
         return okClient.newCall(request).execute();
     }

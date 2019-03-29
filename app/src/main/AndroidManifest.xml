@@ -21,6 +21,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,10 +31,14 @@
             android:name=".download.BgDownloadService"
             android:enabled="true"
             android:exported="true" />
+        <service android:name=".download.TranscriptDownService" />
 
-        <activity android:name=".play.PlayAvWithSubtitleAt"></activity>
-
-        <activity android:name=".play.PlayAudioActivity"></activity>
+        <activity android:name=".play.PlayVideoAt" />
+        <activity android:name=".play.PlayAudioActivity" />
+        <activity android:name=".play.SAmPlayAudioAt" />
+        <activity android:name=".play.SciPlayAudioAt" />
+        <activity android:name=".TranscriptDownAt" />
+        <activity android:name=".SettingAt"></activity>
     </application>
 
 </manifest>

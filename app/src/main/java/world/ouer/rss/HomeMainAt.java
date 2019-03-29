@@ -20,12 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import world.ouer.rss.adapter.AbsRssAdapter;
@@ -36,10 +38,12 @@ import world.ouer.rss.dao.DataQueryTools;
 import world.ouer.rss.dao.RssItem;
 import world.ouer.rss.dao.SourceItem;
 import world.ouer.rss.net.RssAsyncService;
+import world.ouer.rss.play.PlayVideoAt;
+import world.ouer.rss.play.SAmPlayAudioAt;
+import world.ouer.rss.play.SciPlayAudioAt;
 
 public class HomeMainAt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     private static final String TAG = "HomeMainAt";
     @BindView(R.id.sourceRv)
     RecyclerView sourceRv;
@@ -137,9 +141,22 @@ public class HomeMainAt extends AppCompatActivity
             @Override
             public void onItemClick(int position, View v,RssItem item) {
                 Log.d(TAG, "_id: "+item.getId()+" position:"+position);
+                String avType=RssUtils.guessTypeFromUrl(item.getEnclosure());
+                Intent in=null;
+                if(avType.equalsIgnoreCase("mp3")){
+                    //mp3
+                    in =new Intent(HomeMainAt.this, SAmPlayAudioAt.class);
 
+                }else if(avType.equalsIgnoreCase("mp4")){
+                    //mp4
+                    in =new Intent(HomeMainAt.this, PlayVideoAt.class);
+                }else if(avType.equalsIgnoreCase("txt")){
+                    //txt
+                    in =new Intent(HomeMainAt.this, SciPlayAudioAt.class);
+                }
+                in.putExtra("rssitem",item);
+                startActivity(in);
             }
-
             @Override
             public void onItemLongClick(int position) {
 
@@ -217,8 +234,10 @@ public class HomeMainAt extends AppCompatActivity
             return true;
         } else if (id == R.id.downloadManager) {
             startActivity(new Intent(this, DownManagerAt.class));
-        }else if(id==R.id.test){
-            startActivity(new Intent(this, AddRssSourceAt.class));
+        }else if(id==R.id.transcript){
+            startActivity(new Intent(this, TranscriptDownAt.class));
+        }else if(id==R.id.setting){
+            startActivity(new Intent(this, SettingAt.class));
         }
         return super.onOptionsItemSelected(item);
     }

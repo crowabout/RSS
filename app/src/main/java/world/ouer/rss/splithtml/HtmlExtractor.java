@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +26,29 @@ public abstract class HtmlExtractor{
     private final static String AUDIO_TRANSCRIPT="transcript";
 
     private LoadFinishListener listener;
+    private Document docs;
 
     public HtmlExtractor(URL url) {
         this.url = url;
         mResultContainer=new HashMap<>();
         service= Executors.newFixedThreadPool(1);
     }
+
+
+    public HtmlExtractor(InputStream in,URL url){
+        this.url = url;
+        try {
+            mResultContainer=new HashMap<>();
+            docs =Jsoup.parse(in,"UTF-8",url.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public URL obtainUrl(){
+        return url;
+    }
+
 
     protected void setIExtractor(IExtractor extractor){
         mExtractor=extractor;
@@ -56,7 +74,7 @@ public abstract class HtmlExtractor{
      * @throws org.jsoup.UnsupportedMimeTypeException
      * @throws java.net.SocketTimeoutException
      */
-    public void extract() {
+    public void extractAsyn() {
             service.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -73,7 +91,18 @@ public abstract class HtmlExtractor{
             });
     }
 
+    /**
+     *
+     */
+    public void extracSyn(){
+        mResultContainer.put(AUDIO_URL,mExtractor.extractAudio(docs));
+        mResultContainer.put(AUDIO_TRANSCRIPT,mExtractor.extractSubtitle(docs));
+    }
+
     public interface LoadFinishListener{
+        /**
+         * @note run on workThread
+         */
         void notifyLoadOk();
     }
 

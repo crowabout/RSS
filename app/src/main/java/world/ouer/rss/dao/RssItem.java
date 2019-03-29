@@ -46,6 +46,7 @@ public class RssItem implements Parcelable {
 	String enclosure;
 	String guid;
 	boolean isDownloaded=false;
+	boolean hasLocalTranscript=false;
 	boolean isRead;
 	long sid;
 
@@ -63,13 +64,18 @@ public class RssItem implements Parcelable {
 		content = data.getString("content");
 		enclosure = data.getString("enclosure");
 		guid= data.getString("guid");
+		id=data.getLong("id");
+		sid=data.getLong("sid");
+		channel=data.getString("channel");
+		hasLocalTranscript=data.getBoolean("hasLocalTranscript");
+		isDownloaded=data.getBoolean("isDownload");
 
 	}
 
-	@Generated(hash = 2125876967)
+	@Generated(hash = 677647664)
 	public RssItem(Long id, String title, String link, String pubDate, String description,
 									String content, String channel, String enclosure, String guid,
-									boolean isDownloaded, boolean isRead, long sid) {
+									boolean isDownloaded, boolean hasLocalTranscript, boolean isRead, long sid) {
 					this.id = id;
 					this.title = title;
 					this.link = link;
@@ -80,11 +86,10 @@ public class RssItem implements Parcelable {
 					this.enclosure = enclosure;
 					this.guid = guid;
 					this.isDownloaded = isDownloaded;
+					this.hasLocalTranscript = hasLocalTranscript;
 					this.isRead = isRead;
 					this.sid = sid;
 	}
-
-
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -97,6 +102,12 @@ public class RssItem implements Parcelable {
 		data.putString("content", content);
 		data.putString("enclosure", enclosure);
 		data.putString("guid", guid);
+		data.putLong("id",id);
+		data.putString("channel",channel);
+		data.putLong("sid",sid);
+		data.putBoolean("hasLocalTranscript",hasLocalTranscript);
+		data.putBoolean("isDownload",isDownloaded);
+
 
 		dest.writeBundle(data);
 	}
@@ -226,6 +237,14 @@ public class RssItem implements Parcelable {
 
 	public void setIsRead(boolean isRead) {
 					this.isRead = isRead;
+	}
+
+	public boolean getHasLocalTranscript() {
+					return this.hasLocalTranscript;
+	}
+
+	public void setHasLocalTranscript(boolean hasLocalTranscript) {
+					this.hasLocalTranscript = hasLocalTranscript;
 	}
 
 

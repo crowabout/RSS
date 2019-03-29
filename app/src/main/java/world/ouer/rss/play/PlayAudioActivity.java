@@ -15,9 +15,13 @@
  */
 
 package world.ouer.rss.play;
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,41 +29,52 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import world.ouer.rss.ChannelType;
 import world.ouer.rss.R;
+import world.ouer.rss.RssApplication;
+import world.ouer.rss.dao.AudioVideoItem;
+import world.ouer.rss.dao.DataQueryTools;
+import world.ouer.rss.dao.RssItem;
+import world.ouer.rss.splithtml.HtmlExtractor;
 
 /**
  * Allows playback of a single MP3 file via the UI. It contains a {@link MediaPlayerHolder}
  * which implements the {@link PlayerAdapter} interface that the activity uses to control
  * audio playback.
  */
-public final class PlayAudioActivity extends AppCompatActivity {
+public  class PlayAudioActivity extends AppCompatActivity {
 
     public static final String TAG = "PlayAudioActivity";
-    public  String MEDIA_RES_ID_PATH;
+    public String MEDIA_RES_ID_PATH;
 
-    private TextView mTextDebug;
-    private SeekBar mSeekbarAudio;
-    private ScrollView mScrollContainer;
-    private PlayerAdapter mPlayerAdapter;
+    protected TextView mTextDebug;
+    protected SeekBar mSeekbarAudio;
+    protected ScrollView mScrollContainer;
+    protected PlayerAdapter mPlayerAdapter;
     private boolean mUserIsSeeking = false;
+    protected DataQueryTools dqt;
+    protected RssItem item;
+    protected TextView mTranscriptTv;
+    protected HtmlExtractor extractor;
+
+    protected final int MSG_LOGGING = 1;
+    protected final int MSG_TRANSCRIPT = 2;
+    protected final int MSG_LOADAUDIO= 3;
+
+    protected ChannelType rssType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_audio_main);
+        initializePlayResource();
         initializeUI();
         initializeSeekbar();
         initializePlaybackController();
-        initializePlayResource();
         Log.d(TAG, "onCreate: finished");
 
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mPlayerAdapter.loadMedia(MEDIA_RES_ID_PATH);
-        Log.d(TAG, "onStart: create MediaPlayer");
     }
 
     @Override
@@ -73,20 +88,46 @@ public final class PlayAudioActivity extends AppCompatActivity {
         }
     }
 
-    private void initializePlayResource(){
+    private void initializePlayResource() {
 
-        Intent data =getIntent();
-        if(data==null){
+        dqt = new DataQueryTools(((RssApplication) getApplication()).daoSession());
+        Intent data = getIntent();
+        if (data == null) {
             return;
         }
-        MEDIA_RES_ID_PATH=data.getStringExtra("path");
+        item = data.getParcelableExtra("rssitem");
+        Log.d(TAG, "initializePlayResource: " + MEDIA_RES_ID_PATH);
     }
 
-    private void loadSubtitle(){
+
+    protected void loadAudioFromEmptyEnclosure(String audioUrl) {
+        loadAudioFromUri(audioUrl);
+    }
 
 
+    protected void loadAudioFromNotEmptyEnclosure() {
+        //from local
+        AudioVideoItem aviItem = dqt.findAvPathByUrl(item.getEnclosure());
+        if (aviItem != null) {
+            loadAudioFromLocal(aviItem.getStorePath());
+        } else {
+            loadAudioFromUri(item.getEnclosure());
+        }
+    }
 
 
+    private void loadAudioFromLocal(String path) {
+        MEDIA_RES_ID_PATH = path;
+        mPlayerAdapter.loadMedia(MEDIA_RES_ID_PATH);
+        mTextDebug.append("init audio from [local]\n");
+
+    }
+
+    private void loadAudioFromUri(String uripath) {
+        //from url
+        Uri uri = Uri.parse(uripath);
+        mTextDebug.append(String.format("init audio from [url]\n"));
+        mPlayerAdapter.loadMedia(uri);
     }
 
     private void initializeUI() {
@@ -96,6 +137,7 @@ public final class PlayAudioActivity extends AppCompatActivity {
         Button mResetButton = (Button) findViewById(R.id.button_reset);
         mSeekbarAudio = (SeekBar) findViewById(R.id.seekbar_audio);
         mScrollContainer = (ScrollView) findViewById(R.id.scroll_container);
+        mTranscriptTv = findViewById(R.id.transcript);
 
         mPauseButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -153,6 +195,26 @@ public final class PlayAudioActivity extends AppCompatActivity {
                 });
     }
 
+    protected Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_LOGGING:
+                    mTextDebug.append((String) msg.obj);
+                    break;
+                case MSG_TRANSCRIPT:
+                    mTranscriptTv.append((String) msg.obj);
+                    break;
+                case MSG_LOADAUDIO:
+                    String audio =(String)msg.obj;
+                    loadAudioFromEmptyEnclosure(audio);
+                    break;
+            }
+
+        }
+    };
+
+
     public class PlaybackListener extends PlaybackInfoListener {
 
         @Override
@@ -167,7 +229,7 @@ public final class PlayAudioActivity extends AppCompatActivity {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     mSeekbarAudio.setProgress(position, true);
-                }else{
+                } else {
                     mSeekbarAudio.setProgress(position);
                 }
 

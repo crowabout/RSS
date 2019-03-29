@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import world.ouer.rss.RssApplication;
 
@@ -38,10 +37,8 @@ public class BgDownloadService extends Service {
         super.onCreate();
         RssApp = (RssApplication) getApplication();
         thread =new RssFileDownTask(RssApp.daoSession());
-        Log.d(TAG, "onStartCommand: "+thread.curDwnlodStat());
         thread.start();
     }
-
 
     /**
      * @return

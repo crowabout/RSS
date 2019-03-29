@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import world.ouer.rss.R;
 
-public class PlayAvWithSubtitleAt extends AppCompatActivity {
+public class PlayVideoAt extends AppCompatActivity {
 
     @BindView(R.id.subtitleTv)
     TextView subtitle;

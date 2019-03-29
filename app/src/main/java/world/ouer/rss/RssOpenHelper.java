@@ -39,10 +39,11 @@ public class RssOpenHelper
         String reuters="insert into sources values (null,\'"+ IEmbedRss.RSS_REUTERS+"\','REUTERS',"+datetime+","+IEmbedRss.RSS_REUTERS.hashCode()+",\'\')";
 
         Log.d(TAG,String.format("cnn:%s\nsc6:%s\nntp:%s\nretu:%s",cnn,sc6,ntp,reuters));
-        db.execSQL(cnn);
+
+//        db.execSQL(cnn);
         db.execSQL(sc6);
         db.execSQL(ntp);
-        db.execSQL(reuters);
+//        db.execSQL(reuters);
 
     }
 

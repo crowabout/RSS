@@ -16,9 +16,9 @@ public class AudioVideoItem {
     @Id(autoincrement = true)
     Long id;
     /**
-     *  file name
+     *  file url
      */
-    String originName;
+    String originUrl;
     /**
      * Audio or Video
      */
@@ -36,75 +36,90 @@ public class AudioVideoItem {
 
     String date;
 
-    boolean isRead;
-    /**
-     *
-     * file name without special characters(?_$...)
-     */
-    String canonicalName;
-    @Generated(hash = 1706191448)
-    public AudioVideoItem(Long id, String originName, String fileType,
-            String storePath, String channel, String date, boolean isRead,
-            String canonicalName) {
+    Long rssItmeId;
+
+    String urlSha1Digest;
+
+    @Generated(hash = 1879709352)
+    public AudioVideoItem(Long id, String originUrl, String fileType,
+            String storePath, String channel, String date, Long rssItmeId,
+            String urlSha1Digest) {
         this.id = id;
-        this.originName = originName;
+        this.originUrl = originUrl;
         this.fileType = fileType;
         this.storePath = storePath;
         this.channel = channel;
         this.date = date;
-        this.isRead = isRead;
-        this.canonicalName = canonicalName;
+        this.rssItmeId = rssItmeId;
+        this.urlSha1Digest = urlSha1Digest;
     }
+
     @Generated(hash = 246076218)
     public AudioVideoItem() {
     }
+
     public Long getId() {
         return this.id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public String getOriginName() {
-        return this.originName;
+
+    public String getOriginUrl() {
+        return this.originUrl;
     }
-    public void setOriginName(String originName) {
-        this.originName = originName;
+
+    public void setOriginUrl(String originUrl) {
+        this.originUrl = originUrl;
     }
+
     public String getFileType() {
         return this.fileType;
     }
+
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
+
     public String getStorePath() {
         return this.storePath;
     }
+
     public void setStorePath(String storePath) {
         this.storePath = storePath;
     }
+
     public String getChannel() {
         return this.channel;
     }
+
     public void setChannel(String channel) {
         this.channel = channel;
     }
-    public boolean getIsRead() {
-        return this.isRead;
-    }
-    public void setIsRead(boolean isRead) {
-        this.isRead = isRead;
-    }
-    public String getCanonicalName() {
-        return this.canonicalName;
-    }
-    public void setCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-    }
+
     public String getDate() {
         return this.date;
     }
+
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Long getRssItmeId() {
+        return this.rssItmeId;
+    }
+
+    public void setRssItmeId(Long rssItmeId) {
+        this.rssItmeId = rssItmeId;
+    }
+
+    public String getUrlSha1Digest() {
+        return this.urlSha1Digest;
+    }
+
+    public void setUrlSha1Digest(String urlSha1Digest) {
+        this.urlSha1Digest = urlSha1Digest;
     }
 
 

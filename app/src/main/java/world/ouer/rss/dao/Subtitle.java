@@ -13,15 +13,16 @@ public class Subtitle {
 
     @Id(autoincrement = true)
     public Long id;
-    public String subtitle;
-    public long urlHashcode;
-    public long refID;
-    @Generated(hash = 1182970823)
-    public Subtitle(Long id, String subtitle, long urlHashcode, long refID) {
+
+    public String transcript;
+    public String audioUrl;
+    public long RSSItemID;
+    @Generated(hash = 444301413)
+    public Subtitle(Long id, String transcript, String audioUrl, long RSSItemID) {
         this.id = id;
-        this.subtitle = subtitle;
-        this.urlHashcode = urlHashcode;
-        this.refID = refID;
+        this.transcript = transcript;
+        this.audioUrl = audioUrl;
+        this.RSSItemID = RSSItemID;
     }
     @Generated(hash = 1071476920)
     public Subtitle() {
@@ -32,23 +33,23 @@ public class Subtitle {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getSubtitle() {
-        return this.subtitle;
+    public String getTranscript() {
+        return this.transcript;
     }
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
     }
-    public long getUrlHashcode() {
-        return this.urlHashcode;
+    public String getAudioUrl() {
+        return this.audioUrl;
     }
-    public void setUrlHashcode(long urlHashcode) {
-        this.urlHashcode = urlHashcode;
+    public void setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
     }
-    public long getRefID() {
-        return this.refID;
+    public long getRSSItemID() {
+        return this.RSSItemID;
     }
-    public void setRefID(long refID) {
-        this.refID = refID;
+    public void setRSSItemID(long RSSItemID) {
+        this.RSSItemID = RSSItemID;
     }
     
 

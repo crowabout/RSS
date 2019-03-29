@@ -16,6 +16,8 @@
 
 package world.ouer.rss.play;
 
+import android.net.Uri;
+
 /**
  * Allows {@link PlayAudioActivity} to control media playback of {@link MediaPlayerHolder}.
  */
@@ -23,6 +25,7 @@ public interface PlayerAdapter {
 
     void loadMedia(int resourceId);
     void loadMedia(String path);
+    void loadMedia(Uri uri);
 
     void release();
 
