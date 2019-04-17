@@ -15,34 +15,30 @@ import world.ouer.rss.dao.DataQueryTools;
 /**
  * Created by pc on 2019/3/26.
  */
-public class TranscriptDownService extends Service{
+public class TranscriptDownService extends Service {
 
-    private final String TAG="TranscriptDownService";
+    private final String TAG = "TranscriptDownService";
     private final IBinder binder = new LocalBinder();
     private DaoSession session;
     private DataQueryTools dqt;
     private RssApplication app;
-
+    TranscriptDownLoader down;
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate start service: ");
-        app=(RssApplication)getApplication();
-        this.session=app.daoSession();
-        dqt=new DataQueryTools(this.session);
+        app = (RssApplication) getApplication();
+        this.session = app.daoSession();
+        dqt = new DataQueryTools(this.session);
+        down= new TranscriptDownLoader(dqt);
+        down.start();
 
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-    }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Runnable down =new TranscriptDownLoader(dqt);
-        new Thread(down).start();
-        return Service.START_NOT_STICKY;
     }
 
     @Nullable
@@ -58,5 +54,13 @@ public class TranscriptDownService extends Service{
         }
     }
 
+    public String debugTxt(){
+        return  down.debugStr();
+    }
+
+
+    public String downloadStata(){
+        return down.downloadStata();
+    }
 
 }

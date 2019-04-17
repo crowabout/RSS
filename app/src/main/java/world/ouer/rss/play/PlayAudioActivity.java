@@ -16,6 +16,8 @@
 
 package world.ouer.rss.play;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +31,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import world.ouer.rss.ChannelType;
 import world.ouer.rss.R;
@@ -64,12 +67,16 @@ public  class PlayAudioActivity extends AppCompatActivity {
 
     protected ChannelType rssType;
 
+    private ClipboardManager cbm;
+    ClipData mClipd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_audio_main);
-        initializePlayResource();
+
         initializeUI();
+        initializePlayResource();
         initializeSeekbar();
         initializePlaybackController();
         Log.d(TAG, "onCreate: finished");
@@ -160,6 +167,8 @@ public  class PlayAudioActivity extends AppCompatActivity {
                         mPlayerAdapter.reset();
                     }
                 });
+
+        cbm= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
     }
 
     private void initializePlaybackController() {
@@ -262,5 +271,12 @@ public  class PlayAudioActivity extends AppCompatActivity {
                         });
             }
         }
+    }
+
+    private void copy(){
+        String text = mTranscriptTv.getText().toString();
+        mClipd= ClipData.newPlainText("cpytxt", text);
+        cbm.setPrimaryClip(mClipd);
+        Toast.makeText(this, mClipd.getItemAt(0).getText(), Toast.LENGTH_SHORT).show();
     }
 }

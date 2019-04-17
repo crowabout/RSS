@@ -21,74 +21,70 @@ import world.ouer.rss.splithtml.SentificAmeraHtmlExtractor;
 /**
  * Created by pc on 2019/3/26.
  */
-
-public class TranscriptDownLoader implements Runnable {
-
-
+public class TranscriptDownLoader extends Thread {
     public final static String TAG = "TranscriptDownLoader";
     private DataQueryTools dqt;
-    private long curPageIndex = 0;
-    private final int pageSize = 10;
-    //(1/2)*60*1000;
-    private final int sleep_time = 5 * 1000;
+    private final int sleep_time = 20 * 1000;
+    private StringBuilder sb;
     /**
      * 总共的数量
      */
-    private long mTotalAllNum = 0;
+    private long mNeededDownloadNum = 0;
     /**
      * 完成数量
      */
-    private volatile long mFinishedNum = 0;
-    /**
-     * 一次加载的数量
-     */
-//    private volatile long mOnceLoadedNum=0;
-    private volatile int mErrorNum = 0;
-
-    private boolean mIsContinue = true;
+    private volatile long mTotalFinishNum = 0;
+    private int pageSize = 30;
+    private volatile int mFinishNumOneTime= 0;
+    private int loadNum=0;
+    private int index;
 
     public TranscriptDownLoader(DataQueryTools dqt) {
         this.dqt = dqt;
-        mTotalAllNum = dqt.countTranscriptUndownload();
+        sb =new StringBuilder();
+        mNeededDownloadNum = dqt.countTranscriptUndownload();
+        Log.d(TAG, "mNeededDownloadNum: "+mNeededDownloadNum);
     }
 
     @Override
     public void run() {
-        while (mIsContinue && (mFinishedNum + mErrorNum) < mTotalAllNum) {
 
-            Log.d(TAG, String.format("in_WHILE mTotalNum:%d  mFinishNum:%d mErrorNum:%d curPageIndex(%d)*size:%d \n",
-                    mTotalAllNum,
-                    mFinishedNum,
-                    mErrorNum,
-                    curPageIndex,
-                    curPageIndex * pageSize
+        while (mTotalFinishNum < mNeededDownloadNum) {
 
-            ));
 
-            if ((mFinishedNum + mErrorNum) >= curPageIndex * pageSize) {
-                List<RssItem> source = dqt.queryManyRssItem(curPageIndex, pageSize);
-                if(source.size()==0){
+            if (mFinishNumOneTime == loadNum) {
+                mTotalFinishNum+=mFinishNumOneTime;
+                mFinishNumOneTime=0;
+
+                Log.d(TAG, "run: mTotalFinishNum:" + mTotalFinishNum);
+                List<RssItem> preDownloaded = dqt.queryManyRssItem(index, pageSize);
+                loadNum=preDownloaded.size();
+                if(loadNum==0){
+                    sb.append("...download Finish...\n");
                     break;
                 }
-                for (int i = 0; i < source.size(); i++) {
+
+                index++;
+
+                for (RssItem item : preDownloaded) {
                     try {
-                        RssItem item = source.get(i);
                         consume(item);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                Log.d(TAG, "run: load(" + source.size() + ")");
-                curPageIndex++;
-            }
-            try {
-                Log.d(TAG, "sleeping !!!");
-                Thread.sleep(sleep_time);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            }else if(mFinishNumOneTime<loadNum){
+                try {
+                    Log.d(TAG, "run: sleep  ");
+                    sleep(sleep_time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        sb.append("...download Finish...\n");
     }
+
 
     private void consume(final RssItem item) throws IOException {
         final String url = item.getLink();
@@ -99,12 +95,14 @@ public class TranscriptDownLoader implements Runnable {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "onFailure" + e.getMessage());
-                mFinishedNum++;
-                mErrorNum++;
+                mFinishNumOneTime++;
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
+                Log.d(TAG, String.format("thread_id:%d\n", Thread.currentThread().getId()));
+
                 if (response.code() == 200) {
                     InputStream in = response.body().byteStream();
                     HtmlExtractor extractor = null;
@@ -124,24 +122,20 @@ public class TranscriptDownLoader implements Runnable {
                     dqt.saveSubtitle(subtitle, audioUrl, item.getId());
                     item.setHasLocalTranscript(true);
                     dqt.updateRssItem(item);
-                    mFinishedNum++;
-                } else {
-                    mErrorNum++;
                 }
-                Log.d(TAG, "onResponse:  mFinshNum:"+mFinishedNum);
+
+                mFinishNumOneTime++;
+                Log.d(TAG, "onResponse:  mFinishNumOneTime:" + mFinishNumOneTime);
             }
         });
     }
 
-    public long getmTotalAllNum() {
-        return mTotalAllNum;
+    public String downloadStata() {
+        return String.format("%d/%d",dqt.countAlreadyDownLoadTranscript(),dqt.rssItemCount());
     }
 
-    public long getmFinishedNum() {
-        return mFinishedNum;
+    public String debugStr(){
+        return sb.toString();
     }
 
-    public int getmErrorNum() {
-        return mErrorNum;
-    }
 }

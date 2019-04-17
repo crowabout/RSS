@@ -42,11 +42,19 @@ public abstract class AbsRssAdapter<T>  extends RecyclerView.Adapter<AbsRssAdapt
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mClickListener!=null){
+                if(mClickListener!=null ){
                     mClickListener.onItemClick(position,v,item);
-                }else{
-                    throw new NullPointerException("you must set the onItemClickListener use #setOnItemClickListener(OnItemClickListener)");
                 }
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(mClickListener!=null){
+                    mClickListener.onItemLongClick(position);
+                }
+               return false;
             }
         });
 
@@ -78,6 +86,7 @@ public abstract class AbsRssAdapter<T>  extends RecyclerView.Adapter<AbsRssAdapt
     public interface OnItemClickListener<T>{
         void onItemClick(int position, View v,T item);
         void onItemLongClick(int position);
+        void onUpdateIconClicked(Object item,View imageView);
     }
 
 }

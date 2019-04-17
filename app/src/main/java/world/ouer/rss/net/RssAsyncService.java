@@ -2,7 +2,9 @@ package world.ouer.rss.net;
 
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
 
 import org.xml.sax.SAXException;
 
@@ -32,6 +34,7 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
     private Handler homeHandler;
     public static final int MESSAGE_UPDATE_NUM=1;
     public static final int MESSAGE_UPDATE_FAIL=2;
+    private ImageView mAnimatedView;
     public RssAsyncService(DaoSession session, Handler handler) {
         this.session=session;
         homeHandler=handler;
@@ -39,6 +42,14 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
         rDao=session.getRssItemDao();
         sDao=session.getSourceItemDao();
     }
+
+    public RssAsyncService(DaoSession session, Handler handler, ImageView animatedView){
+        this(session,handler);
+        if(animatedView!=null){
+            mAnimatedView=animatedView;
+        }
+    }
+
 
     @Override
     protected String doInBackground(List<SourceItem>... urls) {
@@ -48,7 +59,12 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
                 client.asynRun(item.getUrl(), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        homeHandler.obtainMessage(MESSAGE_UPDATE_FAIL,e.getMessage()).sendToTarget();
+                        Message msg =new Message();
+                        msg.obj=e.getMessage();
+
+                        msg.arg2=item.getId().intValue();
+                        msg.what=MESSAGE_UPDATE_FAIL;
+                        homeHandler.sendMessage(msg);
                     }
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
@@ -89,7 +105,7 @@ public class RssAsyncService extends AsyncTask<List<SourceItem>, Integer, String
                 iterator.next().setSid(id);
             }
             rDao.saveInTx(rssItems);
-            homeHandler.obtainMessage(MESSAGE_UPDATE_NUM,"store__"+rssItems.size()).sendToTarget();
+            homeHandler.obtainMessage(MESSAGE_UPDATE_NUM,rssItems.size(),(int)id).sendToTarget();
             Log.i(TAG, "store__:"+rssItems.size());
 
         } catch (SAXException e) {

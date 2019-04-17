@@ -26,18 +26,22 @@ public class DataQueryTools {
         stDao =session.getSubtitleDao();
     }
 
-
-
-
     public List<RssItem> queryRssItem(int index){
         int offset =index*PAGE_SIZE;
         Log.i(TAG, String.format("index:%d offset:%d",index,offset));
         return ridao.queryBuilder().limit(PAGE_SIZE).offset(offset).list();
     }
 
+    public List<RssItem> queryRssItemBySID(int index,Long sid){
+        int offset =index*PAGE_SIZE;
+        return ridao.queryBuilder().where(RssItemDao.Properties.Sid.eq(sid)).limit(PAGE_SIZE).offset(offset).list();
+    }
+
     public List<SourceItem> queryAllSourceItem(){
         return sidao.queryBuilder().list();
     }
+
+
     public SourceItem querySourceItemLastAccessTime(){
         return sidao.queryBuilder().where(SourceItemDao.Properties.Id.eq(1)).unique();
     }
@@ -79,8 +83,16 @@ public class DataQueryTools {
                 .where(RssItemDao.Properties.HasLocalTranscript.eq(false),RssItemDao.Properties.Channel.in("Science","60-Second Science")).count();
     }
 
+    public long countAlreadyDownLoadTranscript(){
+        return ridao.queryBuilder().where(RssItemDao.Properties.HasLocalTranscript.eq(true)).count();
+    }
+
     public long alreadyDownloadNumTransctipt(){
         return stDao.count();
+    }
+
+    public long rssItemCount(){
+        return ridao.count();
     }
 
 }

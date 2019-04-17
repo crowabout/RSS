@@ -1,6 +1,7 @@
 package world.ouer.rss.play;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,17 +16,14 @@ import world.ouer.rss.splithtml.NTPHtmlExtractor;
  */
 
 public class SciPlayAudioAt  extends PlayAudioActivity implements HtmlExtractor.LoadFinishListener{
-
     @Override
     protected void onStart() {
         super.onStart();
-
         try {
             loadSubtitle();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
     }
 
     protected void loadSubtitle() throws MalformedURLException {
@@ -34,18 +32,23 @@ public class SciPlayAudioAt  extends PlayAudioActivity implements HtmlExtractor.
             //already download transcript
             mTextDebug.append("load mTranscriptTv from [local]\n");
             mTranscriptTv.setText(subtitle.getTranscript());
+            Log.d(TAG, "loadSubtitle: "+item.getId()+" \n"+subtitle.getTranscript());
 
-            if(item.getEnclosure().startsWith("http")){
+
+            String enclosure =item.getEnclosure();
+            if(!TextUtils.isEmpty(enclosure) && enclosure.startsWith("http")){
                 loadAudioFromNotEmptyEnclosure();
+            }else {
+                mTextDebug.append("no video resource");
             }
 
         } else {
             //not download transcript yet.
             URL url = new URL(item.getLink());
-            mTextDebug.append(String.format("load transcript from \n[%s]\n", url));
+            mTextDebug.append(String.format("load transcript from \nNetwork\n"));
             extractor = new NTPHtmlExtractor(url);
             extractor.extractAsyn();
-            mTextDebug.append(String.format("loading url:%s\n", item.getLink()));
+            mTextDebug.append(String.format("loading url:%s\n",url));
             extractor.setLoadFinishListener(this);
         }
     }

@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/padding"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/side_subscribe_source_tv1"
-        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding">
+    <LinearLayout
+        android:id="@+id/left"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/largeSize"
-        android:text="title" />
-    <TextView
-        android:id="@+id/side_subscribe_source_tv2"
-        android:layout_width="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/side_subscribe_source_tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textSize="@dimen/largeSize" />
+
+        <TextView
+            android:id="@+id/side_subscribe_source_tv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="amount"
+            android:textSize="@dimen/smallSize" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/side_subscribe_source_iv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/smallSize"
-        android:text="amount" />
-</LinearLayout>
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_refresh_black_24dp" />
+</RelativeLayout>

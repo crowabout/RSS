@@ -58,6 +58,11 @@ public class MainPageNewsAdapter extends AbsRssAdapter<RssItem> implements AbsRs
         notifyDataSetChanged();
     }
 
+    public void clear(){
+        source.clear();
+        notifyDataSetChanged();
+    }
+
     // 是否下载|是否阅读|(mp3|mp4|txt)|日期|channel
     private String stat(RssItem item){
 

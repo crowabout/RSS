@@ -37,7 +37,6 @@ public class TranscriptDownAt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_transcript_down_at);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initVari();
@@ -72,44 +71,40 @@ public class TranscriptDownAt extends AppCompatActivity {
     }
 
     private void updateDisplay() {
-//        stat.setText(String.format(getString(R.string.stat),
-//                mService.getM(),
-//                mService.curDwnlodNum(),
-//                mService.curUnDwnlodNum()
-//        ));
-//        info.append(mService.curDwnlodStat());
-//        if (autoScroll2Bottom) {
-//            scrollView.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (scrollView != null) {
-//                        scrollView.fullScroll(View.FOCUS_DOWN);
-//                    }
-//                }
-//            });
-//        }
+        stat.setText(mService.downloadStata());
+        info.setText(mService.debugTxt());
+        if (autoScroll2Bottom) {
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (scrollView != null) {
+                        scrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                }
+            });
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(this, TranscriptDownService.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        startService(new Intent(this,TranscriptDownService.class));
-
+        Intent intent = new Intent(this, TranscriptDownService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(connection);
-        mBound = false;
+        if(mBound){
+            unbindService(connection);
+            mBound = false;
+        }
     }
 
     /**

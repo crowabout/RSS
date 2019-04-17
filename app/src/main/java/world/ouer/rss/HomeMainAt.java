@@ -1,11 +1,10 @@
 package world.ouer.rss;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,14 +18,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,10 +50,10 @@ public class HomeMainAt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "HomeMainAt";
     @BindView(R.id.sourceRv)
-    RecyclerView sourceRv;
+    RecyclerView sideRv;
 
     @BindView(R.id.RvMain)
-    RecyclerView rvMain;
+    RecyclerView mainRv;
     private int pageIndex = 0;
 
     private SideSubscribeSourceAdapter sideAdapter;
@@ -57,6 +61,11 @@ public class HomeMainAt extends AppCompatActivity
     private DataQueryTools dqt;
 
     private boolean isLoadMore = false;
+    DaoSession session;
+
+    private Map<Long, ImageView> mMapAnimator = new HashMap<>();
+    
+    private Long selectedSid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +77,6 @@ public class HomeMainAt extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,30 +92,61 @@ public class HomeMainAt extends AppCompatActivity
         initMainRecyLv();
     }
 
-
     private void initDqt() {
-        DaoSession session = ((RssApplication) getApplication()).daoSession();
+        session = ((RssApplication) getApplication()).daoSession();
         dqt = new DataQueryTools(session);
-
     }
 
-    private void initSideRecyLv() {
 
+
+    private void initSideRecyLv() {
         List<SourceItem> source = dqt.queryAllSourceItem();
         if (sideAdapter == null) {
             sideAdapter = new SideSubscribeSourceAdapter(this, source);
         }
-        sourceRv.setAdapter(sideAdapter);
-        sourceRv.setLayoutManager(new LinearLayoutManager(this));
-        sourceRv.setItemAnimator(new DefaultItemAnimator());
+        sideRv.setAdapter(sideAdapter);
+        sideAdapter.setOnItemClickListener(new AbsRssAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View v, Object item) {
+                SourceItem sItem = (SourceItem) item;
+                selectedSid=sItem.getId();
+
+                pageIndex=0;
+                mMainPageAdapter.clear();
+                mMainPageAdapter.update(dqt.queryRssItemBySID(pageIndex,selectedSid));
+
+                toggleDrawer();
+            }
+
+            @Override
+            public void onItemLongClick(int position) {
+                Log.d(TAG, "onItemLongClick: " + position);
+            }
+            @Override
+            public void onUpdateIconClicked(Object item, View v) {
+                ImageView sideImageView= (ImageView) v;
+                RotateAnimation ra = new RotateAnimation(0, 360,
+                        RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                        RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+                ra.setRepeatMode(RotateAnimation.INFINITE);
+                ra.setRepeatCount(RotateAnimation.INFINITE);
+                ra.setDuration(1000);
+                sideImageView.startAnimation(ra);
+                updateService((SourceItem) item);
+                mMapAnimator.put(((SourceItem) item).getId(), sideImageView);
+
+            }
+        });
+        sideRv.setLayoutManager(new LinearLayoutManager(this));
+        sideRv.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void initMainRecyLv() {
         List<RssItem> source = dqt.queryRssItem(pageIndex);
         mMainPageAdapter = new MainPageNewsAdapter(this, source);
-        rvMain.setAdapter(mMainPageAdapter);
-        rvMain.setLayoutManager(new LinearLayoutManager(this));
-        rvMain.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mainRv.setAdapter(mMainPageAdapter);
+        mainRv.setLayoutManager(new LinearLayoutManager(this));
+        mainRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -139,38 +171,50 @@ public class HomeMainAt extends AppCompatActivity
         });
         mMainPageAdapter.setOnItemClickListener(new AbsRssAdapter.OnItemClickListener<RssItem>() {
             @Override
-            public void onItemClick(int position, View v,RssItem item) {
-                Log.d(TAG, "_id: "+item.getId()+" position:"+position);
-                String avType=RssUtils.guessTypeFromUrl(item.getEnclosure());
-                Intent in=null;
-                if(avType.equalsIgnoreCase("mp3")){
+            public void onItemClick(int position, View v, RssItem item) {
+                Log.d(TAG, "_id: " + item.getId() + " position:" + position);
+                String avType = RssUtils.guessTypeFromUrl(item.getEnclosure());
+                Intent in = null;
+                if (avType.equalsIgnoreCase("mp3")) {
                     //mp3
-                    in =new Intent(HomeMainAt.this, SAmPlayAudioAt.class);
+                    in = new Intent(HomeMainAt.this, SAmPlayAudioAt.class);
 
-                }else if(avType.equalsIgnoreCase("mp4")){
+                } else if (avType.equalsIgnoreCase("mp4")) {
                     //mp4
-                    in =new Intent(HomeMainAt.this, PlayVideoAt.class);
-                }else if(avType.equalsIgnoreCase("txt")){
+                    in = new Intent(HomeMainAt.this, PlayVideoAt.class);
+                } else if (avType.equalsIgnoreCase("txt")) {
                     //txt
-                    in =new Intent(HomeMainAt.this, SciPlayAudioAt.class);
+                    in = new Intent(HomeMainAt.this, SciPlayAudioAt.class);
                 }
-                in.putExtra("rssitem",item);
+                in.putExtra("rssitem", item);
                 startActivity(in);
             }
+
             @Override
             public void onItemLongClick(int position) {
 
             }
+
+            @Override
+            public void onUpdateIconClicked(Object item, View imageView) {
+
+            }
         });
-
-
     }
 
     private void loadNextpage(int pageIndex) {
-        List<RssItem> moredata = dqt.queryRssItem(pageIndex);
+        List<RssItem> moredata;
+        if(selectedSid==null){
+            moredata = dqt.queryRssItem(pageIndex);
+        }else{
+            moredata=dqt.queryRssItemBySID(pageIndex,selectedSid);
+        }
+
+        if(moredata.size()==0){
+            Toast.makeText(this, "no more data!", Toast.LENGTH_SHORT).show();
+        }
         mMainPageAdapter.update(moredata);
     }
-
 
     public void addSource(View view) {
         startActivity(new Intent(this, AddRssSourceAt.class));
@@ -186,6 +230,14 @@ public class HomeMainAt extends AppCompatActivity
         }
     }
 
+
+    private  void toggleDrawer(){
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -198,23 +250,33 @@ public class HomeMainAt extends AppCompatActivity
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case RssAsyncService.MESSAGE_UPDATE_NUM:
-                    Toast.makeText(HomeMainAt.this, String.valueOf(msg.obj), Toast.LENGTH_SHORT).show();
-                    if(!hasLoad){
-                       notifyUpdate();
+                    Toast.makeText(HomeMainAt.this, String.valueOf("store_" + msg.arg1), Toast.LENGTH_SHORT).show();
+                    if (!hasLoad) {
+                        notifyUpdate();
                     }
+                    stopAnimate(msg.arg2);
                     break;
                 case RssAsyncService.MESSAGE_UPDATE_FAIL:
                     Toast.makeText(HomeMainAt.this, String.valueOf(msg.obj), Toast.LENGTH_SHORT).show();
+
+                    stopAnimate(msg.arg2);
                     break;
             }
+            sideAdapter.notifyDataSetChanged();
             return true;
         }
     });
 
+    private void stopAnimate(int resourceItemId) {
+        ImageView sideUpdateIcon = mMapAnimator.get(new Long(resourceItemId));
+        sideUpdateIcon.getAnimation().cancel();
+        //remove from map
+        mMapAnimator.remove(new Long(resourceItemId));
+    }
 
-    boolean hasLoad=false;
-    private void notifyUpdate(){
-        hasLoad=true;
+
+    private void notifyUpdate() {
+        hasLoad = true;
         loadNextpage(pageIndex);
     }
 
@@ -227,28 +289,46 @@ public class HomeMainAt extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.sync) {
             if (isSync()) {
-                DaoSession session = ((RssApplication) getApplication()).daoSession();
                 List<SourceItem> urls = session.getSourceItemDao().loadAll();
                 new RssAsyncService(session, handler).execute(urls);
             }
             return true;
-        } else if (id == R.id.downloadManager) {
+        } else if (id == R.id.downloadManager)
+
+        {
             startActivity(new Intent(this, DownManagerAt.class));
-        }else if(id==R.id.transcript){
+        } else if (id == R.id.transcript)
+
+        {
             startActivity(new Intent(this, TranscriptDownAt.class));
-        }else if(id==R.id.setting){
+        } else if (id == R.id.setting)
+
+        {
             startActivity(new Intent(this, SettingAt.class));
         }
-        return super.onOptionsItemSelected(item);
+        return super.
+
+                onOptionsItemSelected(item);
+
     }
+
+    private void updateService(SourceItem item) {
+        List l = new ArrayList(1);
+        l.add(item);
+        new RssAsyncService(session, handler).execute(l);
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        Log.d(TAG, "onNavigationItemSelected: " + item.getMenuInfo());
+
         int id = item.getItemId();
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -279,4 +359,7 @@ public class HomeMainAt extends AppCompatActivity
         }
         return false;
     }
+
+
+    boolean hasLoad = false;
 }
