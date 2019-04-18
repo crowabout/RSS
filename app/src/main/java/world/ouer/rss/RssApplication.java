@@ -25,7 +25,6 @@ public class RssApplication extends Application {
         daoSession = new DaoMaster(db).newSession();
         FileDownloader.setup(this);
 
-        RssUtils.creatStorePlace();
     }
 
 

@@ -13,7 +13,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,14 +21,9 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -64,7 +58,7 @@ public class HomeMainAt extends AppCompatActivity
     DaoSession session;
 
     private Map<Long, ImageView> mMapAnimator = new HashMap<>();
-    
+
     private Long selectedSid;
 
     @Override
@@ -90,13 +84,26 @@ public class HomeMainAt extends AppCompatActivity
 
         initSideRecyLv();
         initMainRecyLv();
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (isSync()) {
+            Log.d(TAG, "onResume: sync url");
+            List<SourceItem> urls = session.getSourceItemDao().loadAll();
+            new RssAsyncService(session, handler).execute(urls);
+        }
+
     }
 
     private void initDqt() {
         session = ((RssApplication) getApplication()).daoSession();
         dqt = new DataQueryTools(session);
     }
-
 
 
     private void initSideRecyLv() {
@@ -109,11 +116,11 @@ public class HomeMainAt extends AppCompatActivity
             @Override
             public void onItemClick(int position, View v, Object item) {
                 SourceItem sItem = (SourceItem) item;
-                selectedSid=sItem.getId();
+                selectedSid = sItem.getId();
 
-                pageIndex=0;
+                pageIndex = 0;
                 mMainPageAdapter.clear();
-                mMainPageAdapter.update(dqt.queryRssItemBySID(pageIndex,selectedSid));
+                mMainPageAdapter.update(dqt.queryRssItemBySID(pageIndex, selectedSid));
 
                 toggleDrawer();
             }
@@ -122,9 +129,10 @@ public class HomeMainAt extends AppCompatActivity
             public void onItemLongClick(int position) {
                 Log.d(TAG, "onItemLongClick: " + position);
             }
+
             @Override
             public void onUpdateIconClicked(Object item, View v) {
-                ImageView sideImageView= (ImageView) v;
+                ImageView sideImageView = (ImageView) v;
                 RotateAnimation ra = new RotateAnimation(0, 360,
                         RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                         RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -204,13 +212,13 @@ public class HomeMainAt extends AppCompatActivity
 
     private void loadNextpage(int pageIndex) {
         List<RssItem> moredata;
-        if(selectedSid==null){
+        if (selectedSid == null) {
             moredata = dqt.queryRssItem(pageIndex);
-        }else{
-            moredata=dqt.queryRssItemBySID(pageIndex,selectedSid);
+        } else {
+            moredata = dqt.queryRssItemBySID(pageIndex, selectedSid);
         }
 
-        if(moredata.size()==0){
+        if (moredata.size() == 0) {
             Toast.makeText(this, "no more data!", Toast.LENGTH_SHORT).show();
         }
         mMainPageAdapter.update(moredata);
@@ -231,7 +239,7 @@ public class HomeMainAt extends AppCompatActivity
     }
 
 
-    private  void toggleDrawer(){
+    private void toggleDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -269,9 +277,11 @@ public class HomeMainAt extends AppCompatActivity
 
     private void stopAnimate(int resourceItemId) {
         ImageView sideUpdateIcon = mMapAnimator.get(new Long(resourceItemId));
-        sideUpdateIcon.getAnimation().cancel();
-        //remove from map
-        mMapAnimator.remove(new Long(resourceItemId));
+        if (sideUpdateIcon != null) {
+            sideUpdateIcon.getAnimation().cancel();
+            //remove from map
+            mMapAnimator.remove(new Long(resourceItemId));
+        }
     }
 
 
@@ -287,15 +297,7 @@ public class HomeMainAt extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.sync) {
-            if (isSync()) {
-                List<SourceItem> urls = session.getSourceItemDao().loadAll();
-                new RssAsyncService(session, handler).execute(urls);
-            }
-            return true;
-        } else if (id == R.id.downloadManager)
-
-        {
+        if (id == R.id.downloadManager) {
             startActivity(new Intent(this, DownManagerAt.class));
         } else if (id == R.id.transcript)
 
@@ -336,28 +338,7 @@ public class HomeMainAt extends AppCompatActivity
     }
 
     private boolean isSync() {
-
-        SourceItem item = dqt.querySourceItemLastAccessTime();
-        String lastUpdateTime = item.getLastTimeAccess();
-        if (TextUtils.isEmpty(lastUpdateTime)) {
-            return true;
-        }
-
-        lastUpdateTime = lastUpdateTime.replaceAll("[0-9]{2}:[0-9]{2}:[0-9]{2}\\s-[0-9]{4}", "").trim();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE,dd LLL yyyy", Locale.US);
-        try {
-            Date date = sdf.parse(lastUpdateTime);
-            Calendar nowCal = Calendar.getInstance();
-
-            Calendar cc = Calendar.getInstance();
-            cc.setTime(date);
-            if (nowCal.after(cc)) {
-                return true;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return dqt.rssItemCount() == 0;
     }
 
 

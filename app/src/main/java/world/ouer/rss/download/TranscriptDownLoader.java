@@ -51,6 +51,7 @@ public class TranscriptDownLoader extends Thread {
 
         while (mTotalFinishNum < mNeededDownloadNum) {
 
+            Log.d(TAG, String.format("mFinishNumOneTime:%d loadNum:%d needDownLoad:%d",mFinishNumOneTime,loadNum,mNeededDownloadNum));
 
             if (mFinishNumOneTime == loadNum) {
                 mTotalFinishNum+=mFinishNumOneTime;
@@ -101,7 +102,6 @@ public class TranscriptDownLoader extends Thread {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                Log.d(TAG, String.format("thread_id:%d\n", Thread.currentThread().getId()));
 
                 if (response.code() == 200) {
                     InputStream in = response.body().byteStream();
@@ -113,7 +113,8 @@ public class TranscriptDownLoader extends Thread {
                     } else if (simplyfyChannel.equalsIgnoreCase("Sci")) {
                         extractor = new NTPHtmlExtractor(in, mURL);
                     } else {
-                        Log.d(TAG, "_channel_: " + channel + " simplefy:" + simplyfyChannel);
+                        mFinishNumOneTime++;
+                        Log.d(TAG, String.format("return  channel:%s mFinishNumOneTime:%d", channel,mFinishNumOneTime));
                         return;
                     }
                     extractor.extracSyn();
@@ -125,7 +126,7 @@ public class TranscriptDownLoader extends Thread {
                 }
 
                 mFinishNumOneTime++;
-                Log.d(TAG, "onResponse:  mFinishNumOneTime:" + mFinishNumOneTime);
+                Log.d(TAG, "Finish.response  mFinishNumOneTime:" + mFinishNumOneTime);
             }
         });
     }

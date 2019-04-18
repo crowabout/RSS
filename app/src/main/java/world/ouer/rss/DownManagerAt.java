@@ -1,11 +1,16 @@
 package world.ouer.rss;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,13 +46,32 @@ public class DownManagerAt extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
+        checkPermission();
+        initVari();
         Intent intent = new Intent(this, BgDownloadService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        initVari();
+
+    }
+
+    private final int PERMISSION_REQUEST=2;
+    private void checkPermission(){
+        if(PackageManager.PERMISSION_GRANTED
+                != ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUEST);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==PERMISSION_REQUEST&&requestCode== Activity.RESULT_OK){
+
+            RssUtils.creatStorePlace();
+
+
+        }
     }
 
     private void initVari() {
@@ -57,7 +81,7 @@ public class DownManagerAt extends AppCompatActivity {
                 if (mBound) {
                     updateDisplay();
                 } else {
-                    Toast.makeText(mService, "mBound==false", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DownManagerAt.this, "mBound==false", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="world.ouer.rss.SettingAt">
-
-    <TextView
-        android:id="@+id/delete"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/delSubtitle"
+        android:layout_width="wrap_content"
         android:text="删除subtitle表"
         android:onClick="deleteSubtable"
         android:layout_height="wrap_content" />
-
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/delCNN"
+        android:layout_width="wrap_content"
+        android:text="删除所有CNN的RSSITEM记录"
+        android:layout_height="wrap_content" />
+</LinearLayout>

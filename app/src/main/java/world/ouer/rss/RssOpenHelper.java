@@ -40,10 +40,10 @@ public class RssOpenHelper
 
         Log.d(TAG,String.format("cnn:%s\nsc6:%s\nntp:%s\nretu:%s",cnn,sc6,ntp,reuters));
 
-//        db.execSQL(cnn);
+        db.execSQL(cnn);
         db.execSQL(sc6);
         db.execSQL(ntp);
-//        db.execSQL(reuters);
+        db.execSQL(reuters);
 
     }
 

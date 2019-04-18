@@ -58,7 +58,8 @@ public class DataQueryTools {
         }
         int offset = (int) (index*curPageSize);
         Log.i(TAG, String.format("queryOneRssItem__index:%d offset:%d",index,offset));
-        return ridao.queryBuilder().where(RssItemDao.Properties.HasLocalTranscript.eq(false)).limit(size).offset(offset).list();
+        return ridao.queryBuilder().where(RssItemDao.Properties.HasLocalTranscript.eq(false),
+                RssItemDao.Properties.Channel.in("Science","60-Second Science")).limit(size).offset(offset).list();
     }
 
 
@@ -93,6 +94,11 @@ public class DataQueryTools {
 
     public long rssItemCount(){
         return ridao.count();
+    }
+
+    public void deleAllCNNRecord(){
+        List<RssItem> cnnItems =ridao.queryBuilder().where(RssItemDao.Properties.Channel.like("%CNN%")).list();
+        ridao.deleteInTx(cnnItems);
     }
 
 }
